@@ -1,18 +1,36 @@
 * {padding: 0; margin: 0; list-style: none;}
 html, body {height: 100%;}
-body {font-size: 14px;}
+body {font-size: 14px; background: #f3f6f9;}
 ul {margin-bottom: 0;}
 ul, li {list-style: none;}
 a.def:link,
 a.def:active,
 a.def:focus,
 a.def:visited,
-a.def, textarea {font: inherit; text-decoration: none;}
+a.def, textarea {color: inherit; text-decoration: none;}
 
 .fl {float: left; position: relative;}
 .fr {float: right; position: relative;}
+.p {cursor: pointer; position: relative;}
 .c {text-align: center; position: relative;}
 .ib {display: inline-block; position: relative;}
 .relative {position: relative;}
 .space {padding: 15px; position: relative;}
-.flex-layout {display: flex;}
+.ellipsis {overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+.abs {position: absolute; left: 0; top: 0; right: 0; bottom: 0;}
+
+.flex {display: flex;}
+.flex > * {flex: 1;}
+
+.flex-layout {height: 100%; display: flex; flex-direction: column;}
+.flex-layout > * {position: relative;}
+.flex-layout > .auto-flex {flex: 1; overflow: auto;}
+
+.table-form {
+  white-space: nowrap;
+  tr {
+    td:nth-child(1) {
+      width: 1px; white-space: nowrap;
+    }
+  }
+}

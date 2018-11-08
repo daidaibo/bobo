@@ -27,6 +27,9 @@ window.vm = new Vue({
   watch: {
     ...require('@/assets/js/watch').default,
   },
+  computed: {
+    ...require('@/assets/js/computed').default,
+  },
   components: { App },
   template: '<App/>',
   mounted() {

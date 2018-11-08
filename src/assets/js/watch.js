@@ -11,5 +11,8 @@ export default {
 
       delete root.isRouterPush
     },
+  },
+  'router.coms'(newVal) {
+    
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="container">
+  <div class="boot-demo">
     <section v-for="(item, idx) in arr">
       <div v-html="item"></div>
       <pre>{{item}}</pre>
@@ -19,11 +19,9 @@ export default {
 </script>
 
 <style lang="scss">
-#app {
-  padding: 50px 0;
-}
+.boot-demo {}
 
-.bs-example {margin: 20px;}
+.bs-example {margin: 20px 0;}
 
 .bs-example-bg-classes p {
   padding: 15px;

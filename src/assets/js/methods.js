@@ -1,4 +1,15 @@
 export default {
+  updateCom(com, r) {
+    const root = this.$root
+    
+    root.isRouterPush = true
+    root.updateRouter(r)
+    root.router.coms.unshift(com)
+
+    while (root.router.coms.length > 2) {
+      root.router.coms.pop()
+    }
+  },
   updateRouter(o, isRouterPush) {
     const root = this.$root
     const r = root.router
@@ -18,6 +29,8 @@ export default {
     } catch (e) {
       console.warn('router parse err')
     }
+
+    r.coms = r.coms || ['blog']
 
     root.router = r
   },

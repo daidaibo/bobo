@@ -35,7 +35,9 @@ export default {
     const ua = navigator.userAgent
     
     return {
-      router: {},
+      router: {
+        coms: [],
+      },
       is: {
         local: ['808', '300'].some((item) => {
           return location.port.indexOf(item) > -1
