@@ -1,6 +1,6 @@
 <template>
   <div class="lang">
-    语言
+    <div class="container">语言</div>
   </div>
 </template>
 
@@ -8,7 +8,8 @@
 export default {
   name: 'lang',
   rootData() {
-    return {}
+    return {
+    }
   },
   rootMethods: {
 

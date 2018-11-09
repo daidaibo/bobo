@@ -69,8 +69,8 @@ export default {
       nav: {
         list: [
           {name: '博文', com: 'blog'},
-          {name: '问答', com: 'aw'},
-          {name: '语言', com: 'lang'},
+          // {name: '问答', com: 'aw'},
+          // {name: '翻译', com: 'lang'},
           {name: '伙伴', com: 'friends'},
         ]
       },
@@ -108,7 +108,7 @@ export default {
   & > .flex-layout {
     & > .auto-flex {
       & > .abs {
-        padding-top: 15px;
+        padding-top: 20px;
       }
     }
   }

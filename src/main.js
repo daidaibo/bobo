@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap/dist/css/bootstrap-theme.css'
+// import 'bootstrap/dist/css/bootstrap-theme.css'
 import '@/assets/css/reset.scss'
 
 import Vue from 'vue'
