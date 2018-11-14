@@ -1,27 +1,29 @@
 <template>
-  <div class="lang">
-    <div class="container">语言</div>
+  <div class="guest">
+    guest
   </div>
 </template>
 
 <script>
 export default {
-  name: 'lang',
+  name: 'guest',
   rootData() {
-    return {
-    }
+    return {}
   },
   rootMethods: {
 
   },
   mounted() {
+    const root = this.$root
+    const r = root.router
+    
     
   }
 }
 </script>
 
-<style lang="scss" scoped>
-.lang {
-
+<style>
+.guest {
+  
 }
 </style>

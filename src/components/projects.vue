@@ -1,12 +1,12 @@
 <template>
-  <div class="friends">
-    friends
+  <div class="projects">
+    projects
   </div>
 </template>
 
 <script>
 export default {
-  name: 'friends',
+  name: 'projects',
   rootData() {
     return {}
   },
@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style>
-.friends {
+.projects {
   
 }
 </style>
