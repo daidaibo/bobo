@@ -1,5 +1,5 @@
 <template>
-  <div class="skill fl no-select">
+  <div class="skill fl nowrap no-select">
     <ul>
       <li
         :class="['p', {on: idx === 5}]" 

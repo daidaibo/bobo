@@ -25,7 +25,17 @@
 export default {
   name: 'topbar',
   rootData() {
-    return {}
+    return {
+      nav: {
+        list: [
+          {name: '问答', com: 'blog'},
+          // {name: '实验室', com: 'testing'},
+          // {name: '开源项目', com: 'projects'},
+          {name: '团队', com: 'friends'},
+          {name: '留言', com: 'guest'},
+        ]
+      },
+    }
   },
   rootMethods: {
 

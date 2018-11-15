@@ -8,14 +8,23 @@ import App from './App'
 
 Vue.config.productionTip = false
 
-new Vue({
+window.vm = new Vue({
   el: '#app',
   data() {
     const root = this.$root
     const r = root.router
+    const ua = navigator.userAgent
     
     return {
-      ...App.rootData.call(root)
+      ...App.rootData.call(root),
+      is: {
+        local: [':300', 'localhost'].some(v => location.origin.indexOf(v) > -1),
+        windows: ua.indexOf('Windows NT') > -1,
+        android: ua.indexOf('Linux; Android') > -1,
+        ios: ua.indexOf('like Mac OS X') > -1,
+        iPhone: ua.indexOf('iPhone; CPU iPhone OS') > -1,
+        iPad: ua.indexOf('iPad; CPU OS') > -1,
+      },
     }
   },
   methods: {

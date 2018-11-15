@@ -10,24 +10,27 @@
               <mogul></mogul>
             </div>
             <div class="ho" style="height: 100%; overflow: auto;">
-              <div class="list-article">
+              <div class="list-article" :style="{marginRight: $root.is.windows ? '6px' : '0'}">
                 <section v-for="n in 30" class="lmr">
                   <div class="fr rich-btn-box">
                     <section>
                       <div class="btn btn-default btn-sm btn-block">
+                        <!-- <span>浏览</span> -->
                         <i class="glyphicon glyphicon-eye-open"></i>
                         <span>100</span>
                       </div>
                     </section>
                     <section>
                       <div class="btn btn-default btn-sm btn-block">
-                        <i class="glyphicon glyphicon-thumbs-up"></i>
+                        <!-- <span>赞同</span> -->
+                        <i class="glyphicon glyphicon-ok"></i>
                         <span>100</span>
                       </div>
                     </section>
                     <section>
                       <div class="btn btn-default btn-sm btn-block">
-                        <i class="glyphicon glyphicon-thumbs-down"></i>
+                        <!-- <span>评论</span> -->
+                        <i class="glyphicon glyphicon-comment"></i>
                         <span>100</span>
                       </div>
                     </section>
@@ -95,15 +98,6 @@ export default {
     const root = this.$root
     
     return {
-      nav: {
-        list: [
-          {name: '博文', com: 'blog'},
-          {name: '实验室', com: 'testing'},
-          // {name: '开源项目', com: 'projects'},
-          {name: '团队', com: 'friends'},
-          {name: '留言', com: 'guest'},
-        ]
-      },
       ...(() => {
         let map = {}
         coms.forEach((item) => {
@@ -139,17 +133,19 @@ export default {
   height: 100%;
   
   .list-article {
-    margin-right: 5px;
     & > section {
       border-bottom: 1px solid #ddd; padding: 1.2em 0;
       &:first-child {padding-top: 0;}
       &:last-child {border-bottom: 0;}
       .rich-btn-box {
-        // margin-right: 10px;
+        padding-top: 5px; margin-bottom: -10px;
         section {
-          margin-top: 5px;
+          margin-bottom: 5px;
           .btn {
             i {top: -0.5px}
+          }
+          &:last-child {
+            margin-bottom: 0;
           }
         }
       }
