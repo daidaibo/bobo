@@ -41,7 +41,9 @@ export default {
 
 <style lang="scss" scoped>
 .topbar {
-  height: 50px; line-height: 50px; background: #222; color: #999;
+  height: 50px; line-height: 50px; color: #999;
+  background: #222;
+  // background: rgb(35,110,231);
   * {vertical-align: top;}
   .nav,
   .fr {
@@ -49,7 +51,11 @@ export default {
       li {
         text-decoration: none; color: inherit; padding: 0 15px; display: inline-block; cursor: pointer;
         &:hover {color: #fff;}
-        &.on {background: #080808; color: #fff;}
+        &.on {
+          color: #fff;
+          background: #080808;
+          background: rgba(0,0,0,.5);
+        }
       }
     }
   }

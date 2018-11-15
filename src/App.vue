@@ -139,7 +139,7 @@ export default {
   height: 100%;
   
   .list-article {
-    margin-right: 10px;
+    margin-right: 5px;
     & > section {
       border-bottom: 1px solid #ddd; padding: 1.2em 0;
       &:first-child {padding-top: 0;}
