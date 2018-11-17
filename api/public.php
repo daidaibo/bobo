@@ -1,3 +1,3 @@
 <?php 
-require 'config.php';
+require 'common.php';
 

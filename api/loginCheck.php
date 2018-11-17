@@ -1,7 +1,7 @@
 <?php 
-require 'config.php';
+require 'common.php';
 
 if (!$_SESSION['user']) {
-  err(1, '请登录');
+  err(100, '请登录');
   exit;
 }
