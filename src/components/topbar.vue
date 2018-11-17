@@ -13,8 +13,8 @@
       </div>
       <div class="fr">
         <ul>
-          <li>登录</li>
-          <li>注册</li>
+          <li @click="$root.user.isShowPanel = 1; $root.user.mode = 'login'">登录</li>
+          <li @click="$root.user.isShowPanel = 1; $root.user.mode = 'reg'">注册</li>
         </ul>
       </div>
     </div>

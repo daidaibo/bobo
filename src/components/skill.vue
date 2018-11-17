@@ -1,5 +1,5 @@
 <template>
-  <div class="skill fl nowrap no-select">
+  <div class="skill no-wrap no-select">
     <ul>
       <li
         :class="['p', {on: idx === 5}]" 
@@ -53,7 +53,7 @@ export default {
   ul {
     li {
       padding: .2em 0;
-      &.on {color: #09f;}
+      &.on {color: #337ab7;}
     }
   }
 }

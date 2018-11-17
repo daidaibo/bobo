@@ -2,6 +2,7 @@ import '@/assets/boot/css/bootstrap.css'
 // import '@/assets/boot/css/bootstrap-theme.css'
 import '@/assets/css/reset.scss'
 import '@/assets/css/main.scss'
+import '@/assets/js/dataAux'
 
 import Vue from 'vue'
 import App from './App'
@@ -25,17 +26,35 @@ window.vm = new Vue({
         iPhone: ua.indexOf('iPhone; CPU iPhone OS') > -1,
         iPad: ua.indexOf('iPad; CPU OS') > -1,
       },
+      router: {
+        coms: []
+      },
+      user: {
+        mode: 'reg',
+        isShowPanel: 0,
+        name: '',
+        password: '',
+        level: 0,
+      },
     }
   },
   methods: {
     ...App.rootMethods,
+    ...require('@/assets/js/methods').default,
   },
   watch: {
     ...require('@/assets/js/watch').default,
   },
   computed: {
-    ...require('@/assets/js/watch').default,
+    ...require('@/assets/js/computed').default,
   },
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  mounted() {
+    const root = this.$root
+    let r
+    
+    root.init()
+    r = root.router
+  }
 })
