@@ -5,17 +5,21 @@ user {
   id
   name
   password
+  description
   email
   level
+  errCount   功能待加入
+  errTime    功能待加入
   time
 }
 
-blog {
+article {
   id
   title
-  desc
+  description
   tags
-  pass
+  belong
+  forbid
   read
   time
 }
@@ -23,10 +27,11 @@ blog {
 comment {
   id
   content
-  blogId
-  level
-  pass
+  belong
+  belongId
+  forbid
   like
+  dislike
   time
 }
 ```

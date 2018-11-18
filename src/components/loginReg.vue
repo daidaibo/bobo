@@ -7,7 +7,7 @@
       :style="{transform: 'perspective(600px) translateY(' + ($root.user.isShowPanel ? 0 : -100) + 'px) translateZ(-1px) rotateY(' + ($root.user.mode === 'login' ? 0 : 180) + 'deg)'}"
       @click.stop
     >
-      <form class="abs">
+      <form class="abs form-login" @submit.prevent="$root.loginReg">
         <div class="gray-title lmr">
           <!-- <div class="fr">
             <span class="text-pale">&times;</span>
@@ -21,13 +21,17 @@
             <tr>
               <td>邮箱：</td>
               <td>
-                <input type="email" class="form-control" required="">
+                <input type="email" class="form-control" required=""
+                  v-model="$root.user.email"
+                >
               </td>
             </tr>
             <tr>
               <td>密码：</td>
               <td>
-                <input type="password" class="form-control" required="">
+                <input type="password" class="form-control" required=""
+                  v-model="$root.user.password"
+                >
               </td>
             </tr>
             <tr>
@@ -41,7 +45,7 @@
           </table>
         </div>
       </form>
-      <form class="abs">
+      <form class="abs form-reg" @submit.prevent="$root.loginReg">
         <div class="gray-title lmr">
           <!-- <div class="fr">
             <span class="text-pale">&times;</span>
@@ -53,15 +57,19 @@
         <div class="space">
           <table class="form-table">
             <tr>
-              <td>用户名：</td>
+              <td>邮箱：</td>
               <td>
-                <input type="text" class="form-control" required="">
+                <input type="email" class="form-control" required=""
+                  v-model="$root.user.email"
+                >
               </td>
             </tr>
             <tr>
-              <td>密　码：</td>
+              <td>密码：</td>
               <td>
-                <input type="password" class="form-control" required="">
+                <input type="password" class="form-control" required=""
+                  v-model="$root.user.password"
+                >
               </td>
             </tr>
             <tr>
@@ -85,7 +93,24 @@ export default {
     return {}
   },
   rootMethods: {
-    
+    loginReg() {
+      const root = this.$root
+      const r = root.router
+      const user = root.user
+      const uid = root.uuid()
+      const password = sha256(user.password)
+
+      root.get('', {
+        a: root.user.mode === 'reg' ? 'reg' : 'login',
+        email: user.email.trim(),
+        uid,
+        password: user.mode === 'reg' ? password : sha256(password + uid),
+      }, (userInfo) => {
+        root.user = {...root.user, ...userInfo}
+        root.user.password = ''
+        root.user.isShowPanel = 0
+      })
+    }
   },
   mounted() {
 

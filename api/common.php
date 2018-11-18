@@ -1,9 +1,15 @@
 <?php 
 require 'config.php';
 
+function getHeadImg($idx) {
+  global $headImgs;
+  $idx = $idx ? $idx : 0;
+  return $headImgs[$idx % count($headImgs)];
+}
+
 function query($sql) {
   global $mysqli;
-  return $mysqli->query($sql) or die(err(1, 'sql err: '.$sql));
+  return $mysqli->query($sql);
 }
 
 function queryRow($sql) {
@@ -15,19 +21,10 @@ function queryRowArray($sql) {
 }
 
 function queryData($sql) {
-  $result = query($sql);
-  $data = array();
-  while ($row = $result->fetch_assoc()) {
-    $data[] = $row;
-  }
-  return $data;
-}
-
-function queryDataArray($sql) {
   global $mysqli;
-  $data = array();
-  $result = $mysqli->query($sql);
-  while ($row = $result->fetch_array()) {
+  $result = query($sql);
+  $data = [];
+  while ($row = $result->fetch_assoc()) {
     $data[] = $row;
   }
   return $data;
@@ -49,23 +46,22 @@ function res($data) {
 $mysqli = new mysqli(dbHost, dbUser, dbPassword, dbName) or die(err(1, '数据库连接失败'));
 $mysqli->query("SET NAMES UTF8") or die(err(1, '字符集设置失败'));
 
-$mysqli->query("truncate table user");
-$names = ['摘星fy', '草莓', '菠萝', '芒果', '杏', '李子', '西瓜', '木瓜', '哈密瓜', '山竹', '樱桃', '香蕉', '芒果', '火龙果', '苹果', '香梨', '山楂', '橘子', '桂圆', '葡萄', '荔枝', '芦柑', '苹果', '香梨', '脐橙', '樱桃', '山竹', '榴莲', '芒果', '草莓'];
-
-foreach ($names as $key => $value) {
-  $mysqli->query("insert into user (
+/*query('TRUNCATE TABLE user');
+$arr = ['摘星fy', '草莓', '菠萝', '芒果', '杏er', '李子', '木瓜', '哈密瓜', '山竹', '樱桃', '香蕉', '芒果', '火龙果', '香梨', '山楂', '橘子', '桂圆', '葡萄', '荔枝', '苹果', '香梨', '脐橙', '樱桃', '山竹', '榴莲', '芒果', '草莓'];
+foreach ($arr as $key => $value) {
+  query("INSERT INTO user (
     name,
     password,
+    description,
     email,
     level,
-    description,
     time
-  ) values (
+  ) VALUES (
     '".$value."',
     '".hash('sha256', '123123')."',
-    '".$value."@codding.cn',
-    9,
-    '".$value." 在阳光灿烂的日子里，和一群好人度过',
+    '".$value." 和一群好人在一个阳光灿烂的日子里干一件事',
+    'test-".($key + 1)."@codding.cn',
+    ".(($key + 9) % 10).",
     ".(time() + $key)."
-  )") or die('sql die');
-}
+  )");
+}*/

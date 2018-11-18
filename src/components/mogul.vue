@@ -5,9 +5,9 @@
         <h3 class="panel-title">大佬信息</h3>
       </div>
       <ul class="list-group">
-        <li class="list-group-item p">
+        <!-- <li class="list-group-item p">
           <a href="javascript:" target="_blank" class="def">大佬简介</a>
-        </li>
+        </li> -->
         <li class="list-group-item p">
           <a href="http://www.imooc.com/t/108955" target="_blank" class="def">大佬在慕课网</a>
         </li>
@@ -18,6 +18,7 @@
         </li>
       </ul>
     </div>
+    <!-- <div style="padding: 3em 0; background: #eee; text-align: center;">广告</div> -->
     <!-- <div class="panel panel-default no-wrap no-select">
       <div class="panel-heading">
         <h3 class="panel-title">筛选</h3>
