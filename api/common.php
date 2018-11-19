@@ -4,7 +4,8 @@ require 'config.php';
 function getHeadImg($idx) {
   global $headImgs;
   $idx = $idx ? $idx : 0;
-  return $headImgs[$idx % count($headImgs)];
+  $idx %= 161;
+  return 'http://'.$_SERVER['SERVER_NAME'].'/bobo/headImg/'.$idx.'.jpg';
 }
 
 function query($sql) {

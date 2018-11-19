@@ -20,7 +20,9 @@ window.root = window.vm = new Vue({
     const r = root.router
     const ua = navigator.userAgent
     const isLocal = [':300', ':808', 'localhost'].some(v => location.origin.indexOf(v) > -1)
-    const requestUrl = (isLocal ? 'http://192.168.1.107' : '') + '/bobo/interface.php'
+
+    // const requestUrl = (isLocal ? 'http://192.168.1.107' : '') + '/bobo/interface.php'  // 住处
+    const requestUrl = (isLocal ? 'http://10.4.10.41' : '') + '/bobo/interface.php'  // 公司
 
     const loading = false
     const local = isLocal
@@ -68,22 +70,9 @@ window.root = window.vm = new Vue({
       },
       editor: {
         isShow: 1,
-        title: isLocal ? '库克宣布下一步重点，全球苹果迷都傻眼了，股价暴跌' : '',
-        tags: '库克 苹果 股价',
-        description: isLocal ? `*库克宣布下一步重点，全球苹果迷都傻眼了，股价暴跌*
-
-2018年第三季度全球智能手机总共出货3.8亿部，其中排名前十的公司瓜分79%的市场份额；排在第一位的依然是三星，总出货量达7230万部；第二名华为，总出货量5200万部；第三名苹果，总出货量4690万部。这已经是华为连续第二个季度超越苹果排在第二。
-
-苹果在中国发售今年最新款iPhone手机的现场再没有往日的火爆。相对应的是华为推出华为Mate20 系列国人的疯抢，8秒过亿。
-
-苹果CEO库克宣布以后将不再公布iPhone或其他产品的销售数量。相反，重点将专注于收入、利润率和销售成本。全球苹果迷都傻眼了，
-
-华尔街分析师丹尼尔•艾夫斯称此举是一个“令人惊掉下巴的举动”，苹果开始有需要隐瞒的数据了。
-
-苹果第四财季共售出4688.9万部iPhone，同比基本持平，低于市场平均预计；共卖出969.9万台iPad，同比降低6%；共卖出529.9万台Mac电脑，同比跌了2%。
-
-市场信心动摇，在当日盘中大跌7%，700亿美元（近5000亿元人民币）瞬间蒸发！
-        ` : '',
+        title: '',
+        tags: '',
+        description: '',
       },
     }
   },
