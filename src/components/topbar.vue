@@ -1,33 +1,23 @@
 <template>
   <div class="topbar no-select">
     <div class="wrap lmr">
-      <div class="logo text-lg fl">BoBo-Fans</div>
-      <div class="nav fl">
+      <div class="fl">
+        <div class="logo text-big">BoBo-Fans</div>
+      </div>
+      <div class="fl">
         <ul>
           <li
             v-for="(item, idx) in $root.nav.list"
             :key="idx"
-            :class="['p', {on: idx === 0}]"
-            @click="$root.router.coms[0] !== item.com && ($root.updateCom(item.com))"
+            :class="{on: item.com === $root.com}"
+            @click="$root.updateCom(item.com)"
           >{{item.name}}</li>
         </ul>
       </div>
       <div class="fr">
-        <ul v-if="$root.isLogined">
-          <li v-if="$root.router.coms[0] !== 'editor'">
-            <div class="btn btn-success btn-sm"
-              @click="$root.gotoAddArticle"
-            >
-              <i class="glyphicon glyphicon-plus"></i>
-              <span>提问</span>
-            </div>
-          </li>
-          <li>欢迎回来：{{$root.user.name}}</li>
-          <li @click="$root.logout">退出</li>
-        </ul>
-        <ul v-else>
-          <li @click="$root.user.isShowPanel = 1; $root.user.mode = 'login'">登录</li>
-          <li @click="$root.user.isShowPanel = 1; $root.user.mode = 'reg'">注册</li>
+        <ul>
+          <li>登录</li>
+          <li>注册</li>
         </ul>
       </div>
     </div>
@@ -42,69 +32,39 @@ export default {
       nav: {
         list: [
           {name: '问答', com: 'blog'},
-          // {name: '实验室', com: 'testing'},
-          // {name: '开源项目', com: 'projects'},
-          // {name: '团队', com: 'friends'},
-          // {name: '留言', com: 'guest'},
+          {name: '团队', com: 'team'},
         ]
-      },
+      }
     }
   },
   rootMethods: {
-    logout() {
-      const root = this.$root
-      const r = root.router
-      
-      root.get('', {a: 'logout'}, () => {
-        root.getAllUser()
-        root.user.isShowPanel = 1
-        root.user.mode = 'login'
-      })
-    },
-    gotoAddArticle() {
-      const root = this.$root
-      const r = root.router
-      
-      root.editor.isShow = 1
-      root.updateCom('editor')
-    },
-  },
-  mounted() {
-    const root = this.$root
-    const r = root.router
-    
-    
+
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped="">
 .topbar {
-  height: 50px; line-height: 50px; color: #999;
+  line-height: 44px;
   background: #222;
-  // background: rgb(35,110,231);
-  * {vertical-align: baseline;}
-  .nav,
-  .fr {
-    ul {
-      li {
-        text-decoration: none; color: inherit; padding: 0 15px; display: inline-block; cursor: pointer;
-        &:hover {color: #fff;}
-        &.on {
-          color: #fff;
-          background: #080808;
-          background: rgba(0,0,0,.5);
-        }
-      }
+  color: #999;
+  .logo {
+    margin-right: 1em; cursor: pointer;
+  }
+  ul {
+    li {
+      display: inline-block; padding: 0 1em; cursor: pointer;
+      &:hover,
+      &.on {color: #fff;}
+      &.on {background: rgba(0,0,0,.5);}
     }
   }
-  .fr {
+  & .fr {
     ul {
       li {
-        padding: 0; margin-left: 30px
+        padding: 0; margin-left: 2em;
       }
     }
   }
 }
-
 </style>

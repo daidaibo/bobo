@@ -1,6 +1,11 @@
 export default {
-  isLogined() {
+  com() {
     const root = this.$root
-    return !!root.user.name
+    const r = root.router
+    
+    switch (r.coms[0]) {
+      default:
+        return r.coms[0]
+    }
   }
 }

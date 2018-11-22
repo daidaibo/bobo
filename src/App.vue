@@ -1,60 +1,34 @@
 <template>
   <div id="app">
     <div class="flex-layout">
-      <topbar v-if="$root.is.pc"></topbar>
+      <topbar></topbar>
       <div class="auto-flex">
-        <div class="auto-scroll">
-          <div class="wrap lmr lmr-panel main-wrap">
-            <!-- <div class="fl">
-              <skill></skill>
-            </div> -->
-            <div class="fr" v-if="$root.is.pc">
-              <mogul></mogul>
-            </div>
-            <div class="ho">
-              <div
-                v-for="(com, idx) in $root.router.coms"
-                :key="idx"
-                :is="com"
-                v-if="idx === 0"
-              ></div>
-            </div>
-          </div>
-        </div>
+        <transition-group :name="'ani-' + ($root.router.countAni % $root.lenAni)">
+          <div
+            v-for="(item, idx) in $root.router.coms"
+            v-if="idx === 0"
+            :key="idx"
+            :is="item"
+          ></div>
+        </transition-group>
       </div>
     </div>
-
-    <login-reg></login-reg>
+    <div class="mask" style="display: none;">
+      <div class="inner">
+        
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import topbar from '@/components/topbar'
-import skill from '@/components/skill'
-import loginReg from '@/components/loginReg'
-
-import mogul from '@/components/mogul'
-import blog from '@/components/blog'
-import testing from '@/components/testing'
-import projects from '@/components/projects'
-import friends from '@/components/friends'
-import guest from '@/components/guest'
-import editor from '@/components/editor'
-
 const coms = [
-  topbar,
-  skill,
-  loginReg,
-  
-  mogul,
-  blog,
-  blog,
-  testing,
-  projects,
-  friends,
-  guest,
-  editor,
-]
+  'components/topbar',
+  'components/blog',
+  'components/team',
+].map((path) => {
+  return require('@/' + path).default
+})
 
 export default {
   name: 'App',
@@ -68,7 +42,7 @@ export default {
           map = {...map, ...item.rootData.call(root)}
         })
         return map
-      })()
+      })(),
     }
   },
   rootMethods: {
@@ -78,16 +52,16 @@ export default {
         map = {...map, ...item.rootMethods}
       })
       return map
-    })()
+    })(),
   },
   components: {
     ...(() => {
-      let map = {}
-      coms.forEach((com) => {
-        map[com.name] = com
+      const map = {}
+      coms.forEach((item) => {
+        map[item.name] = item
       })
       return map
-    })()
+    })(),
   }
 }
 </script>
@@ -95,14 +69,18 @@ export default {
 <style lang="scss" scoped>
 #app {
   height: 100%;
-  .main-wrap {
-    & > .ho {
-      overflow: hidden;
-      & > div {
-        width: 100%; height: 100%; position: absolute; left: 0; top: 0; overflow: auto; padding-top: 20px;
+  .flex-layout {
+    & > .auto-flex {
+      & > span {
+        display: block; height: 100%; position: relative;
+        transform-style: preserve-3d;
+        transform: perspective(600px);
+        & > div {
+          background: #fff;
+          width: 100vw; min-height: calc(100% + 1px); position: absolute; left: 0; top: 0;
+        }
       }
     }
   }
 }
-
 </style>

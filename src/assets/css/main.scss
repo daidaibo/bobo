@@ -1,32 +1,39 @@
-.form-table {
-  white-space: nowrap;
-  tr {
-    td {
-      padding: 5px;
-      &:nth-child(1) {padding-left: 0;}
-      &:nth-child(2) {padding-right: 0;}
-    }
+
+.avatar {width: 60px; height: 60px; background: #eee no-repeat center / cover; border-radius: 25%;}
+
+.table-layout {
+  table-layout: fixed;
+  * {
+    vertical-align: top;
   }
+}
+
+.lmr {
+  &:after {content: ""; display: block; clear: both;}
+  & > .fl {margin-right: 15px;}
+  & > .fr {margin-left: 15px;}
+  & > .m {overflow: hidden;}
+}
+
+.flex {
+  display: flex;
+  & > * {flex: 1;}
+}
+
+.flex-layout {
+  height: 100%; display: flex; flex-direction: column;
+  &.flex-row {flex-direction: row;}
+  & > div {position: relative;}
+  & > .auto-flex {flex: 1; overflow-x: hidden; overflow-y: auto;}
 }
 
 .mask {
-  width: 100%; height: 100%; position: fixed; left: 0; top: 0; background: rgba(0,0,0,.5); padding: 20px; overflow: auto; z-index: 1000;
+  width: 100%; height: 100%; position: fixed; left: 0; top: 0; z-index: 200; background: rgba(0,0,0,.5);
   display: flex; align-items: center; justify-content: center;
   & > .inner {
-    max-width: 100%; min-width: 280px; background: #fff; border-radius: 4px; overflow: hidden; position: relative;
+    min-width: 260px; min-height: 120px; background: #fff; border-radius: 4px; overflow: hidden;
     .gray-title {
-      line-height: 38px; background: #eee; border-bottom: 1px solid #ddd; text-align: center; user-select: none;
-      * {vertical-align: top;}
-      .ellipsis {
-        margin: 0 40px;
-      }
-      .fr {
-        font-size: 20px; font-weight: bold; margin-left: 0;
-        span {
-          padding: 0 15px; display: inline-block; cursor: pointer;
-        }
-      }
+      line-height: 34px; border-bottom: 1px solid #ddd; background: #eee; text-align: center;
     }
   }
 }
-

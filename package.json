@@ -2,7 +2,7 @@
   "name": "bobo-fans",
   "version": "1.0.0",
   "description": "A Vue.js project",
-  "author": "田士贞 <shizhen@jingdata.com>",
+  "author": "tianshizhen <273259755@qq.com>",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
@@ -10,8 +10,8 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "bootstrap": "3.x",
     "crypto-js": "^3.1.9-1",
-    "markdown": "^0.5.0",
     "vue": "^2.5.2"
   },
   "devDependencies": {
