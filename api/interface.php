@@ -36,17 +36,17 @@ switch ($_GET['a']) {
     $row = queryRow("SELECT * FROM user WHERE email='".$_GET['email']."' LIMIT 1");
     
     if (!$row) {
-      err(2, '邮箱不存在');
+      err(2, '邮箱未注册');
       exit;
     }
 
+    if ($row['level'] === '0') {
+      err(2, '去去去，不和你玩');
+    }
+    
     if ($_GET['password'] !== hash('sha256', $row['password'].$_GET['uid'])) {
       err(2, '密码错误');
     }
-
-    /*if ($row['level'] === '0') {
-      err(2, '账户冻结');
-    }*/
 
     unset($row['password']);
     $row['headImg'] = getHeadImg($row['id'] - 1);
@@ -93,15 +93,15 @@ switch ($_GET['a']) {
       'headImg' => getHeadImg($_SESSION['user']['id']),
     ]);
     break;
-  case 'getAllUser':
+  case 'getDataDefault':
     $data = queryData("SELECT id, name FROM user");
     foreach ($data as $key => $value) {
       unset($data[$key]['password']);
       $data[$key]['headImg'] = getHeadImg($value['id'] - 1);
     }
     res([
-      'info' => $_SESSION['user'],
-      'list' => $data,
+      'userInfo' => $_SESSION['user'],
+      'userList' => $data,
     ]);
     break;
   case 'article-get-list':
@@ -128,12 +128,13 @@ switch ($_POST['a']) {
     }
 
     query("INSERT INTO article (
-      title, tags, description, author
+      title, tags, description, author, time
     ) VALUES (
       '".$_POST['title']."',
       '".$_POST['tags']."',
       '".$_POST['description']."',
-      '".$_SESSION['user']['id']."'
+      '".$_SESSION['user']['id']."',
+      ".time()."
     )");
 
     $insertId = $mysqli->insert_id;
