@@ -16,8 +16,8 @@
       </div>
       <div class="fr">
         <ul>
-          <li>登录</li>
-          <li>注册</li>
+          <li @click="$root.user.isShowPanel = true; $root.user.mode = 'login' ">登录</li>
+          <li @click="$root.user.isShowPanel = true; $root.user.mode = 'reg' ">注册</li>
         </ul>
       </div>
     </div>
@@ -64,6 +64,14 @@ export default {
       li {
         padding: 0; margin-left: 2em;
       }
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .topbar {
+    .logo {
+      display: none;
     }
   }
 }

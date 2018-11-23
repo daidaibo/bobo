@@ -13,5 +13,21 @@ export default {
 
       delete root.isRouterPush
     }
-  }
+  },
+  'router.coms': {
+    deep: true,
+    handler(newVal) {
+      const root = this.$root
+      const r = root.router
+      
+      switch (newVal[0]) {
+        case 'blog':
+          root.blogGetList()
+          break
+        case 'team':
+
+          break
+      }
+    }
+  },
 }

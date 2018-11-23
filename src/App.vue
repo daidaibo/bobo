@@ -2,7 +2,7 @@
   <div id="app">
     <div class="flex-layout">
       <topbar></topbar>
-      <div class="auto-flex">
+      <div class="auto-flex" style="overflow: hidden;">
         <transition-group :name="'ani-' + ($root.router.countAni % $root.lenAni)">
           <div
             v-for="(item, idx) in $root.router.coms"
@@ -13,11 +13,7 @@
         </transition-group>
       </div>
     </div>
-    <div class="mask" style="display: none;">
-      <div class="inner">
-        
-      </div>
-    </div>
+    <login-reg></login-reg>
   </div>
 </template>
 
@@ -26,6 +22,8 @@ const coms = [
   'components/topbar',
   'components/blog',
   'components/team',
+
+  'components/login-reg',
 ].map((path) => {
   return require('@/' + path).default
 })
@@ -66,7 +64,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 #app {
   height: 100%;
   .flex-layout {
@@ -76,8 +74,10 @@ export default {
         transform-style: preserve-3d;
         transform: perspective(600px);
         & > div {
-          background: #fff;
-          width: 100vw; min-height: calc(100% + 1px); position: absolute; left: 0; top: 0;
+          width: 100%; height: 100%; position: absolute; left: 0; top: 0; background: #f3f6f9; overflow: auto; overflow-x: hidden;
+          & > div {
+            width: 100vw;
+          }
         }
       }
     }

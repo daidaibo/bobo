@@ -1,5 +1,4 @@
-
-.avatar {width: 60px; height: 60px; background: #eee no-repeat center / cover; border-radius: 25%;}
+.avatar {width: 60px; height: 60px; background: #eee no-repeat center / cover; border-radius: 4px;}
 
 .table-layout {
   table-layout: fixed;
@@ -8,10 +7,15 @@
   }
 }
 
+.table-form {
+  width: 100%; white-space: nowrap;
+  td {padding: 5px;}
+}
+
 .lmr {
   &:after {content: ""; display: block; clear: both;}
-  & > .fl {margin-right: 15px;}
-  & > .fr {margin-left: 15px;}
+  & > .fl {margin-right: 15px; max-width: 40%;}
+  & > .fr {margin-left: 15px; max-width: 40%;}
   & > .m {overflow: hidden;}
 }
 
@@ -31,9 +35,9 @@
   width: 100%; height: 100%; position: fixed; left: 0; top: 0; z-index: 200; background: rgba(0,0,0,.5);
   display: flex; align-items: center; justify-content: center;
   & > .inner {
-    min-width: 260px; min-height: 120px; background: #fff; border-radius: 4px; overflow: hidden;
+    min-width: 260px; min-height: 120px; background: #fff; border-radius: 4px; overflow: hidden; position: relative;
     .gray-title {
-      line-height: 34px; border-bottom: 1px solid #ddd; background: #eee; text-align: center;
+      line-height: 36px; border-bottom: 1px solid #ddd; background: #eee; text-align: center;
     }
   }
 }
