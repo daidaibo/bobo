@@ -92,6 +92,7 @@ export default {
       
       root.get('', {a: 'logout'}, () => {
         root.getUserInfo()
+        root.updateCom('blog')
       })
     },
     loginReg() {
@@ -134,9 +135,6 @@ export default {
     .form-login {transform: translateZ(1px);}
     .form-reg {transform: translateZ(-1px) scale(-1, 1);}
 
-    .btn-box {
-      .btn {margin-right: 5px;}
-    }
     form {
       width: 100%; height: 100%; position: absolute; left: 0; top: 0; background: #fff; border-radius: 4px; overflow: hidden;
     }

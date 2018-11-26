@@ -21,6 +21,7 @@
 const coms = [
   'components/topbar',
   'components/blog',
+  'components/blog-info',
   'components/team',
   'components/editor',
   'components/me',
@@ -78,7 +79,7 @@ export default {
         & > div {
           width: 100%; height: 100%; position: absolute; left: 0; top: 0; background: #f3f6f9; overflow: auto; overflow-x: hidden;
           & > div {
-            width: 100vw;
+            width: 100vw; min-height: calc(100% + 1px);
           }
         }
       }

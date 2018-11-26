@@ -4,7 +4,8 @@ export default {
     const isLocal = location.origin.indexOf(808) > -1
     return {
       lenAni: 30,
-      requestUrl: 'http://10.4.10.41/bobo/interface.php',
+      // requestUrl: 'http://10.4.10.41/bobo/interface.php',
+      requestUrl: 'http://192.168.1.107/bobo/interface.php',
       is: {
         local: isLocal,
       },
@@ -38,6 +39,12 @@ export default {
     }
   },
   rootMethods: {
+    alert(msg) {
+      alert(msg)
+    },
+    confirm(msg) {
+      confirm(msg)
+    },
     json2url(o) {
       return Object.keys(o).map(k => k + '=' + encodeURIComponent(o[k])).join('&')
     },
@@ -139,16 +146,20 @@ export default {
       const root = this.$root
       const r = root.router
       
+      for (let key in extend) {
+        root.$set(root.router, key, extend[key])
+      }
+
+      if (r.coms[0] === com) {
+        return
+      }
+
       root.isRouterPush = true
       r.countAni++
       r.coms.unshift(com)
 
       while (r.coms.length > 2) {
         r.coms.pop()
-      }
-
-      for (let key in extend) {
-        root.$set(root.router, key, extend[key])
       }
     },
     getAllUser(cb) {
@@ -195,6 +206,7 @@ export default {
           map[item.id] = item
           mapBranch[item.pid] = mapBranch[item.pid] || []
           mapBranch[item.pid].push(item)
+          item.authorInfo = root.user.map[item.author] || {}
         })
 
         root.blog.list = data

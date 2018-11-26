@@ -14,15 +14,30 @@ export default {
       delete root.isRouterPush
     }
   },
+  'router.blogId'(newVal) {
+    const root = this.$root
+    newVal ? root.getBlogInfo() : root.clearEditor()
+  },
   'router.coms': {
     deep: true,
     handler(newVal) {
       const root = this.$root
       const r = root.router
+      const com = newVal[0]
       
-      switch (newVal[0]) {
+      if (!root.isLogined && com === 'me') {
+        root.updateCom('blog')
+        return
+      }
+
+      switch (com) {
         case 'blog':
           root.blogGetList()
+          break
+        case 'editor':
+          if (!r.blogId) {
+            
+          }
           break
         case 'team':
 

@@ -10,15 +10,15 @@
             v-for="(item, idx) in $root.nav.list"
             :key="idx"
             :class="{on: item.com === $root.com}"
-            @click="$root.updateCom(item.com)"
+            @click="$root.updateCom(item.com, {blogId: undefined})"
           >{{item.name}}</li>
         </ul>
       </div>
       <div class="fr">
         <ul v-if="$root.isLogined">
           <li>
-            <div class="btn btn-success" style="top: -1px;"
-              @click="$root.updateCom('editor')"
+            <div class="btn btn-sm btn-success" style="top: -1px;"
+              @click="$root.gotoEditor"
             >
               <i class="glyphicon glyphicon-plus"></i>
               <span>提问</span>
@@ -50,7 +50,27 @@ export default {
     }
   },
   rootMethods: {
+    gotoEditor() {
+      const root = this.$root
+      const r = root.router
+      
+      if (!r.blogId && r.coms[0] === 'editor') {
+        return
+      }
 
+      r.coms.unshift('editor')
+      root.updateRouter({blogId: undefined}, 'push')
+      root.clearEditor()
+    },
+    clearEditor() {
+      const root = this.$root
+      const blogInfo = root.blogInfo
+
+      blogInfo.title = ''
+      blogInfo.description = ''
+      blogInfo.tags = ''
+      blogInfo.content = ''
+    },
   }
 }
 </script>
@@ -61,7 +81,7 @@ export default {
   background: #222;
   color: #999;
   .logo {
-    margin-right: 1em; cursor: pointer;
+    cursor: pointer;
   }
   ul {
     li {

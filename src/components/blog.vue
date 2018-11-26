@@ -9,8 +9,10 @@
           >
             <div class="fl no-select">
               <div class="box-user">
-                <div class="avatar" :style="{backgroundImage: 'url(' + ($root.user.map[item.author].headImg) + ')'}"></div>
-                <div class="nickname c">{{$root.user.map[item.author].name}}</div>
+                <div class="avatar" :style="{backgroundImage: 'url(' + (item.authorInfo.headImg) + ')'}"></div>
+                <div class="nickname ellipsis text-xs c"
+                  :title="item.authorInfo.name"
+                >{{item.authorInfo.name}}</div>
               </div>
             </div>
             <div class="fr btn-box no-select">
@@ -28,10 +30,16 @@
               </div>
             </div>
             <div class="ho">
-              <div class="title p ellipsis">
-                <strong class="text-bigger">{{item.title}}</strong>
+              <div class="title ellipsis">
+                <strong class="text-bigger p"
+                  @click="$root.updateCom('blog-info', {blogId: item.id}, 'push')"
+                >{{item.title}}</strong>
               </div>
-              <div class="desc p line-2 text-gray">{{item.description}}</div>
+              <div class="desc line-2 text-gray">
+                <span class="p" 
+                  @click="$root.updateCom('blog-info', {blogId: item.id}, 'push')"
+                >{{item.description}}</span>
+              </div>
               <div class="box-tag">
                 <div class="btn btn-xs btn-default"
                   v-for="(tag, idx) in item.tags_"
@@ -73,10 +81,16 @@ export default {
   .list-blog {
     section {
       border-bottom: 1px solid #e7e7e7; padding: 1em 0;
+      & > .fl {
+        max-width: 70px;
+        .avatar {
+          width: 70px; height: 70px;
+        }
+      }
       &:last-child {border-bottom: none;}
       .box-user {
         cursor: pointer;
-        .nickname {line-height: 2em;}
+        .nickname {line-height: 2.6em;}
       }
       .desc {margin: 8px 0;}
       .box-tag {

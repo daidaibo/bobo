@@ -1,7 +1,18 @@
-.avatar {width: 60px; height: 60px; background: #eee no-repeat center / cover; border-radius: 4px;}
+.btn-box {
+  margin-bottom: -8px;
+  .btn {
+    margin: 0 8px 8px 0;
+  }
+}
+
+.avatar {width: 60px; height: 60px; background: #eee no-repeat center / cover; border-radius: 50%; box-shadow: 0 0 5px rgba(0,0,0,.2);}
 
 .btn-box {
   .btn {margin-right: 8px;}
+}
+
+.table-data {
+  width: 100%;
 }
 
 .table-layout {

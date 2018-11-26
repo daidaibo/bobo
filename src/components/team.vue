@@ -1,36 +1,25 @@
 <template>
   <div class="team">
     <div>
-      <div class="wrap">
-        <div class="list-member">
-          <section class="team-card col-md-3 col-sm-4 col-xs-6"
-            v-for="(item, idx) in $root.user.list"
-          >
-            <div class="inner">
-              <div class="head-img p"
-                :style="{backgroundImage: 'url(' + item.headImg + ')'}"
-              ></div>
-              <div class="info">
-                <div class="text-box lmr">
-                  <div class="fr ellipsis p" v-if="item.buss">
-                    <a
-                      :href="item.bussUrl || 'javascript:' "
-                      target="_blank"
-                      :class="{def: !item.bussUrl}"
-                    >@{{item.buss}}</a>
-                  </div>
-                  <div class="ellipsis nickname">
-                    <a
-                      :href="item.url || 'javascript:' "
-                      target="_blank"
-                      :class="{def: !item.url}"
-                    >{{item.name}}</a>
-                  </div>
+      <div class="list-member">
+        <section class="team-card"
+          v-for="(item, idx) in $root.user.list"
+        >
+          <div class="inner">
+            <div class="head-img p"
+              :style="{backgroundImage: 'url(' + item.headImg + ')'}"
+            ></div>
+            <div class="info">
+              <div class="text-box lmr">
+                <div class="ellipsis nickname c">
+                  <a :class="{def: !item.url}" target="_blank" :href="item.url || 'javascript:'">{{item.name}}</a>
+                  <span>@</span>
+                  <a :class="{def: !item.bussUrl}" target="_blank" :href="item.bussUrl || 'javascript:'">{{item.buss}}</a>
                 </div>
               </div>
             </div>
-          </section>
-        </div>
+          </div>
+        </section>
       </div>
     </div>
   </div>
@@ -46,15 +35,31 @@ export default {
 
   }
 }
+
+{
+  const nodeStyle = document.createElement('style')
+
+  nodeStyle.id = 'nodeStyle'
+  nodeStyle.innerHTML = new Array(30).fill().map((_, idx, arr) => {
+    const len = arr.length
+    const per = parseInt((1 / (idx + 1) * 10000)) / 100
+
+    return `
+      @media (min-width: ${idx * 200}px) {
+        .list-member .team-card {width: ${per}%;}
+      }
+    `
+  }).join('')
+  document.body.appendChild(nodeStyle)
+}
 </script>
 
 <style lang="scss" scoped>
 .team {
-  padding: 1em 0;
   .list-member {
-    margin: 0 -8px;
+    padding: 10px 20px;
     .team-card {
-      display: inline-block; padding: 8px;
+      display: inline-block; padding: 6px;
       .inner {
         background: #fff; border-radius: 4px; overflow: hidden;
         box-shadow: 0 0 10px rgba(0,0,0,.1);
@@ -62,8 +67,7 @@ export default {
           padding-top: 100%; background: #eee no-repeat center / cover;
         }
         .info {
-          height: 43px;
-          padding: .8em;
+          height: 44px; padding: .8em; border-top: 1px solid #eee;
           .fr {
             max-width: 50%;
           }
