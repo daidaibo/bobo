@@ -91,14 +91,32 @@ switch ($_GET['a']) {
     }
     res($data);
     break;
+  case 'blog-del':
+    $row = queryRow("SELECT author FROM blog WHERE id='".$_GET['blogId']."' LIMIT 1");
+    if (!($row['author'] === $_SESSION['user']['id'] || $_SESSION['user']['level'] == 9)) {
+      err(1, 'blog-del 无权操作');
+    }
+    $mysqli->query("DELETE FROM blog WHERE id='".$_GET['blogId']."' LIMIT 1");
+    err(0, '操作成功');
+    break;
   case 'blog-get-list':
-    res(queryData("SELECT * FROM blog WHERE belong='".$_GET['belong']."' ORDER BY id DESC"));
+    $data = queryData("SELECT * FROM blog WHERE belong='".$_GET['belong']."' ORDER BY id DESC");
+    foreach ($data as $key => $value) {
+      unset($data[$key]['content']);
+    }
+    res($data);
+    break;
+  case 'blog-get-info':
+    if (!$_GET['blogId']) {
+      err(1, '参数不全');
+    }
+    res(queryRow("SELECT * FROM blog WHERE id='".$_GET['blogId']."' LIMIT 1 "));
     break;
 }
 
 
 if (!$_SESSION['user']) {
-  err(100, '请登录');
+  err(2, '请登录');
   exit;
 }
 
@@ -140,11 +158,18 @@ switch ($_POST['a']) {
     err(0, '密码修改成功');
     break;
   case 'blog-add':
-    if (!$_POST['author'] || !$_POST['belong'] || !$_POST['title'] || !$_POST['description'] || !$_POST['content'] || !$_POST['tags']) {
+    checkUidByPub();
+
+    if (!$_POST['belong'] || !$_POST['title'] || !$_POST['description'] || !$_POST['content'] || !$_POST['tags']) {
       err(1, '参数不全');
     }
 
     $_POST['pid'] = $_POST['pid'] ? $_POST['pid'] : 0;
+    $row = queryRow("SELECT id FROM blog WHERE title='".$_POST['title']."' LIMIT 1 ");
+
+    if ($row['id']) {
+      res(['alreadyHave' => true, 'row' => $row]);
+    }
 
     query("
       INSERT INTO blog (
@@ -158,7 +183,7 @@ switch ($_POST['a']) {
         time
       ) VALUES (
         '".$_POST['pid']."',
-        '".$_POST['author']."',
+        '".$_SESSION['user']['id']."',
         '".$_POST['belong']."',
         '".$_POST['title']."',
         '".$_POST['description']."',
@@ -170,5 +195,35 @@ switch ($_POST['a']) {
 
     $insertId = $mysqli->insert_id;
     res(queryRow("SELECT * FROM blog WHERE id=$insertId LIMIT 1 "));
+    break;
+  case 'blog-update':
+    checkUidByPub();
+
+    if (!$_POST['blogId'] || !$_POST['belong'] || !$_POST['title'] || !$_POST['description'] || !$_POST['content'] || !$_POST['tags']) {
+      err(1, '参数不全');
+    }
+
+    $row = queryRow("SELECT id FROM blog WHERE title='".$_POST['title']."' AND id!='".$_POST['blogId']."' LIMIT 1 ");
+    if ($row['id']) {
+      err(2, '标题已存在，改一下');
+    }
+
+    $row = queryRow("SELECT * FROM blog WHERE id='".$_POST['blogId']."' LIMIT 1 ");
+    if (!($row['author'] === $_SESSION['user']['id'] || $_SESSION['user']['level'] == 9)) {
+      err(1, '无权操作');
+    }
+
+    $mysqli->query("UPDATE blog SET
+      belong='".$_POST['belong']."',
+      title='".$_POST['title']."',
+      description='".$_POST['description']."',
+      content='".$_POST['content']."',
+      tags='".$_POST['tags']."'
+      WHERE
+      id='".$_POST['blogId']."'
+      LIMIT 1
+    ") or die(err(2, '编辑失败'));
+
+    err(0, '操作成功');
     break;
 }

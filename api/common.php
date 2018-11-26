@@ -4,7 +4,7 @@ require 'config.php';
 function getHeadImg($idx) {
   global $headImgs;
   $idx = $idx ? $idx : 0;
-  $idx %= 162;
+  $idx %= 238;
   return 'http://'.$_SERVER['SERVER_NAME'].'/bobo/headImg/'.$idx.'.jpg';
 }
 
@@ -170,4 +170,4 @@ foreach ($arr as $key => $value) {
   )");
 }*/
 
-// query("update user set sex=0");
+// query("update user set url='', bussUrl='' ");
