@@ -48,6 +48,25 @@ function sha256($str) {
   return hash('sha256', $str);
 }
 
+function checkUid() {
+  if (!$_SESSION['uid']) {
+    err(1, 'no uid out...');
+  }
+  $uid = $_SESSION['uid'];
+  unset($_SESSION['uid']);
+  return sha256($uid);
+}
+
+function checkUidByPub() {
+  $uid = checkUid();
+
+  if ($uid !== $_POST['pub']) {
+    err(2, 'checkUidByPub 验证失败');
+  }
+
+  return $uid;
+}
+
 
 $mysqli = new mysqli(dbHost, dbUser, dbPassword, dbName) or die(err(1, '数据库连接失败'));
 $mysqli->query("SET NAMES UTF8") or die(err(1, '字符集设置失败'));
@@ -150,3 +169,5 @@ foreach ($arr as $key => $value) {
     ".time()."
   )");
 }*/
+
+// query("update user set sex=0");

@@ -10,7 +10,7 @@
             <div class="fl no-select">
               <div class="box-user">
                 <div class="avatar" :style="{backgroundImage: 'url(' + ($root.user.map[item.author].headImg) + ')'}"></div>
-                <div class="nickname c">摘星fy</div>
+                <div class="nickname c">{{$root.user.map[item.author].name}}</div>
               </div>
             </div>
             <div class="fr btn-box no-select">

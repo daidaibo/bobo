@@ -15,10 +15,25 @@ export default {
       user: {
         mode: 'login',
         isShowPanel: false,
-        email: isLocal ? 'test-1@codding.cn' : '',
-        password: isLocal ? '123123' : '',
         list: [],
         map: {},
+        info: {
+          id: '',
+          email: '',
+          birthday: '',
+          password: '',
+          name: '',
+          description: '',
+          level: '',
+          errCount: '',
+          errTime: '',
+          url: '',
+          addr: '',
+          buss: '',
+          bussUrl: '',
+          time: '',
+          headImg: '',
+        },
       },
     }
   },
@@ -31,7 +46,7 @@ export default {
       const r = root.router
       
       root.get('', {a: 'getUid'}, (data) => {
-        cb && cb(data.uid)
+        cb && cb(sha256(data.uid))
       })
     },
     get(url, data, succ, err) {
@@ -52,7 +67,7 @@ export default {
       }
 
       xhr.onreadystatechange = root.onreadystatechange.bind(root, xhr, succ, err)
-      xhr.open('GET', root.requestUrl + url, true)
+      xhr.open('POST', root.requestUrl + url, true)
       xhr.send(formData)
     },
     onreadystatechange(xhr, succ, err) {
@@ -68,13 +83,24 @@ export default {
     },
     err(str, succ, err) {
       const root = this.$root
-      let data = {}
+      let data
 
       try {
         data = JSON.parse(str)
       } catch (e) {
         console.log('数据解析失败', str)
         return
+      }
+
+      data = data || {}
+
+      switch (data.code) {
+        case 1:
+          console.log(data.msg)
+          break
+        case 2:
+          alert(data.msg)
+          break
       }
 
       if (data.code) {
@@ -109,7 +135,7 @@ export default {
         root.$set(root.router, key, o[key])
       }
     },
-    updateCom(com) {
+    updateCom(com, extend) {
       const root = this.$root
       const r = root.router
       
@@ -120,19 +146,35 @@ export default {
       while (r.coms.length > 2) {
         r.coms.pop()
       }
+
+      for (let key in extend) {
+        root.$set(root.router, key, extend[key])
+      }
     },
-    getDataDefault(cb) {
+    getAllUser(cb) {
       const root = this.$root
       
-      root.get('', {a: 'getDataDefault'}, (data) => {
+      root.get('', {a: 'getAllUser'}, (data) => {
         const map = {}
-        data.userList.forEach((item, idx, arr) => {
+        data.forEach((item) => {
           map[item.id] = item
         })
-        root.user = {...root.user, ...data.userInfo}
-        root.user.list = data.userList
+        root.user.list = data
         root.user.map = map
-        cb && cb()
+        cb && cb.call(root)
+      })
+    },
+    getUserInfo(cb) {
+      const root = this.$root
+
+      root.get('', {a: 'getUserInfo'}, (data) => {
+        ;[
+          'id', 'name', 'email', 'sex', 'birthday', 'password', 'description', 'level', 'errCount', 'errTime', 'url', 'addr', 'buss', 'bussUrl', 'time', 'headImg',
+        ].forEach((key) => {
+          root.user.info[key] = data[key] || ''
+        })
+        root.user.info.birthday_ = new Date(data.birthday * 1000).format('y-m-d')
+        cb && cb.call(root)
       })
     },
     blogGetList() {
@@ -147,7 +189,6 @@ export default {
         const mapBranch = {}
 
         data.forEach((item) => {
-          // item.read_ = item.read ? item.read.split(',') : []
           item.agree_ = item.agree ? item.agree.split(',') : []
           item.disagree_ = item.disagree ? item.disagree.split(',') : []
           item.tags_ = item.tags ? item.tags.split(/\s+/) : []
@@ -165,9 +206,11 @@ export default {
       const root = this.$root
       const r = root.router
       
-      root.getDataDefault(() => {
-        root.routerInit()
-        window.onpopstate = root.routerInit.bind(root)
+      root.getAllUser(() => {
+        root.getUserInfo(() => {
+          root.routerInit()
+          window.onpopstate = root.routerInit.bind(root)
+        })
       })
     }
   },

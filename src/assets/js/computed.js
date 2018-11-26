@@ -10,5 +10,8 @@ export default {
       default:
         return r.coms[0]
     }
-  }
+  },
+  isLogined() {
+    return !!this.$root.user.info.name
+  },
 }

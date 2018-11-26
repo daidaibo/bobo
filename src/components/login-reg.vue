@@ -16,16 +16,16 @@
             <tr>
               <td>邮箱：</td>
               <td>
-                <input type="email" class="form-control" autocomplete="off" required 
-                  v-model="$root.user.email"
+                <input type="email" class="form-control" autocomplete="off" required tabindex="-1" 
+                  v-model="$root.user.info.email"
                 >
               </td>
             </tr>
             <tr>
               <td>密码：</td>
               <td>
-                <input type="password" class="form-control" autocomplete="off" required 
-                  v-model="$root.user.password"
+                <input type="password" class="form-control" autocomplete="off" required tabindex="-1" minlength="6" maxlength="30"
+                  v-model="$root.user.info.password"
                 >
               </td>
             </tr>
@@ -51,15 +51,15 @@
               <td>邮箱：</td>
               <td>
                 <input type="email" class="form-control" autocomplete="off" required 
-                  v-model="$root.user.email"
+                  v-model="$root.user.info.email"
                 >
               </td>
             </tr>
             <tr>
               <td>密码：</td>
               <td>
-                <input type="password" class="form-control" autocomplete="off" required 
-                  v-model="$root.user.password"
+                <input type="password" class="form-control" autocomplete="off" required minlength="6" maxlength="30"
+                  v-model="$root.user.info.password"
                 >
               </td>
             </tr>
@@ -86,30 +86,38 @@ export default {
     return {}
   },
   rootMethods: {
+    logout() {
+      const root = this.$root
+      const r = root.router
+      
+      root.get('', {a: 'logout'}, () => {
+        root.getUserInfo()
+      })
+    },
     loginReg() {
       const root = this.$root
       const r = root.router
       const user = root.user
 
-      user.email = user.email.trim()
+      user.info.email = user.info.email.trim()
 
-      if (user.mode === 'login') {
-        root.getUid((uid) => {
-          root.get('', {
-            a: 'login',
-            email: user.email,
-            password: sha256(sha256(user.password) + uid),
-          }, (data) => {
-            console.log(data)
-          })
+      root.getUid((uid) => {
+        const isLogin = user.mode === 'login'
+        const password = sha256(user.info.password)
+        const requestData = {
+          a: isLogin ? 'login' : 'reg',
+          email: user.info.email,
+          password: isLogin ? sha256(password + uid) : password,
+          uid: isLogin ? undefined : uid,
+        }
+
+        !isLogin && (requestData.uid = uid)
+
+        root.get('', requestData, (data) => {
+          root.user.isShowPanel = 0
+          root.getUserInfo()
         })
-      } else {
-        // 注册
-        
-      }
-
-      // console.log(user.email)
-      // console.log(user.password)
+      })
     }
   }
 }

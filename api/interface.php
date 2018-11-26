@@ -1,12 +1,14 @@
 <?php 
 require 'common.php';
 
-
 if ($_SESSION['user']) {
-  $row = queryRow("SELECT level FROM user WHERE id=".$_SESSION['user']['id']." LIMIT 1");
+  $row = queryRow("SELECT * FROM user WHERE id=".$_SESSION['user']['id']." LIMIT 1");
   if ($row['level'] === '0') {
     err(2, '不和你玩！');
   }
+  $row['password'] = '';
+  $row['headImg'] = getHeadImg($row['id']);
+  $_SESSION['user'] = $row;
 }
 
 switch ($_GET['a']) {
@@ -22,16 +24,12 @@ switch ($_GET['a']) {
     err(0, '退出成功');
     break;
   case 'login':
+    $uid = checkUid();
+
     if (!$_GET['email'] || !$_GET['password']) {
       err(1, 'reg err 参数不全');
     }
 
-    if (!$_SESSION['uid']) {
-      err(1, 'no session uid');
-    }
-
-    $uid = $_SESSION['uid'];
-    unset($_SESSION['uid']);
     $row = queryRow("SELECT * FROM user WHERE email='".$_GET['email']."' LIMIT 1");
 
     if (!$row) {
@@ -42,17 +40,17 @@ switch ($_GET['a']) {
     if ($row['level'] === '0') {
       err(2, '去去去，不和你玩');
     }
-    
+
     if ($_GET['password'] !== hash('sha256', $row['password'].$uid)) {
       err(2, '密码错误');
     }
-    
-    unset($row['password']);
-    $row['headImg'] = getHeadImg($row['id']);
+
     $_SESSION['user'] = $row;
-    res($row);
+    err(0, '登录成功');
     break;
   case 'reg':
+    checkUid();
+
     if (!$_GET['email'] || !$_GET['password']) {
       err(1, 'reg err 参数不全');
     }
@@ -79,26 +77,19 @@ switch ($_GET['a']) {
     $insertId = $mysqli->insert_id;
 
     query("UPDATE user SET name='未命名-$insertId' WHERE id=$insertId LIMIT 1 ");
-    $row = queryRow("SELECT * FROM user WHERE id=".$insertId." LIMIT 1");
-    unset($row['password']);
-    $row['headImg'] = getHeadImg($row['id'] - 1);
-    $_SESSION['user'] = $row;
-    res($row);
+    $_SESSION['user'] = queryRow("SELECT * FROM user WHERE id=".$insertId." LIMIT 1");
+    err(0, '注册成功');
     break;
   case 'getUserInfo':
-    res($_SESSION['user']);
+    $_SESSION['user'] ? res($_SESSION['user']) : err(0, '请登录');
     break;
-  case 'getDataDefault':
+  case 'getAllUser':
     $data = queryData("SELECT * FROM user LIMIT 30");
     foreach ($data as $key => $value) {
-      unset($data[$key]['password']);
-      unset($data[$key]['time']);
-      $data[$key]['headImg'] = getHeadImg($value['id'] - 1);
+      $data[$key]['password'] = '';
+      $data[$key]['headImg'] = getHeadImg($value['id']);
     }
-    res([
-      'userInfo' => $_SESSION['user'],
-      'userList' => $data,
-    ]);
+    res($data);
     break;
   case 'blog-get-list':
     res(queryData("SELECT * FROM blog WHERE belong='".$_GET['belong']."' ORDER BY id DESC"));
@@ -112,12 +103,48 @@ if (!$_SESSION['user']) {
 }
 
 switch ($_POST['a']) {
+  case 'update-user-info':
+    checkUidByPub();
+
+    if (!$_POST['name']) {
+      err(1, 'update-user-info 参数不全');
+    }
+
+    $_POST['sex'] = $_POST['sex'] ? $_POST['sex'] : '0';
+
+    $mysqli->query("UPDATE user SET
+      name='".$_POST['name']."',
+      sex='".$_POST['sex']."',
+      description='".$_POST['description']."',
+      url='".$_POST['url']."',
+      buss='".$_POST['buss']."',
+      bussUrl='".$_POST['bussUrl']."'
+      WHERE
+      id='".$_SESSION['user']['id']."'
+      LIMIT 1
+    ") or die(err(2, '用户信息修改失败'));
+
+    err(0, '修改成功');
+    break;
+  case 'update-password':
+    checkUidByPub();
+
+    $row = queryRow("SELECT * FROM user WHERE id='".$_SESSION['user']['id']."' LIMIT 1");
+
+    if ($row['password'] !== $_POST['passOrigin']) {
+      err(2, '当前密码错误');
+    }
+
+    query("UPDATE user SET password='".$_POST['newPass']."' WHERE id='".$_SESSION['user']['id']."' LIMIT 1");
+
+    err(0, '密码修改成功');
+    break;
   case 'blog-add':
-    if (!$_GET['author'] || !$_GET['belong'] || !$_GET['title'] || !$_GET['description'] || !$_GET['content'] || !$_GET['tags']) {
+    if (!$_POST['author'] || !$_POST['belong'] || !$_POST['title'] || !$_POST['description'] || !$_POST['content'] || !$_POST['tags']) {
       err(1, '参数不全');
     }
 
-    $_GET['pid'] = $_GET['pid'] ? $_GET['pid'] : 0;
+    $_POST['pid'] = $_POST['pid'] ? $_POST['pid'] : 0;
 
     query("
       INSERT INTO blog (
@@ -130,19 +157,18 @@ switch ($_POST['a']) {
         tags,
         time
       ) VALUES (
-        '".$_GET['pid']."',
-        '".$_GET['author']."',
-        '".$_GET['belong']."',
-        '".$_GET['title']."',
-        '".$_GET['description']."',
-        '".$_GET['content']."',
-        '".$_GET['tags']."',
+        '".$_POST['pid']."',
+        '".$_POST['author']."',
+        '".$_POST['belong']."',
+        '".$_POST['title']."',
+        '".$_POST['description']."',
+        '".$_POST['content']."',
+        '".$_POST['tags']."',
         ".time()."
       )
     ");
 
     $insertId = $mysqli->insert_id;
-
     res(queryRow("SELECT * FROM blog WHERE id=$insertId LIMIT 1 "));
     break;
 }

@@ -22,6 +22,8 @@ const coms = [
   'components/topbar',
   'components/blog',
   'components/team',
+  'components/editor',
+  'components/me',
 
   'components/login-reg',
 ].map((path) => {

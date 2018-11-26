@@ -15,7 +15,19 @@
         </ul>
       </div>
       <div class="fr">
-        <ul>
+        <ul v-if="$root.isLogined">
+          <li>
+            <div class="btn btn-success" style="top: -1px;"
+              @click="$root.updateCom('editor')"
+            >
+              <i class="glyphicon glyphicon-plus"></i>
+              <span>提问</span>
+            </div>
+          </li>
+          <li @click="$root.updateCom('me', {subCom: 'user-info'})">我的</li>
+          <li @click="$root.logout()">退出</li>
+        </ul>
+        <ul v-else>
           <li @click="$root.user.isShowPanel = true; $root.user.mode = 'login' ">登录</li>
           <li @click="$root.user.isShowPanel = true; $root.user.mode = 'reg' ">注册</li>
         </ul>
