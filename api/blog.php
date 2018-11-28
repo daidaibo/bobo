@@ -4,7 +4,10 @@ require 'common.php';
 switch ($_REQUEST['a']) {
   case 'blog-info':
     if (!$_REQUEST['blogId']) err(1, 'blog-info no blogId');
-    res(queryRow("SELECT * FROM blog WHERE id={$_REQUEST['blogId']} LIMIT 1"));
+    $data = queryRow("SELECT * FROM blog WHERE id={$_REQUEST['blogId']} LIMIT 1");
+    if (!$data) err(2, '不存在');
+    query("UPDATE blog SET blog.read=blog.read+1 WHERE id={$_REQUEST['blogId']} LIMIT 1");
+    res($data);
     break;
   case 'blog-list':
     $data = queryData("SELECT * FROM blog ORDER BY id DESC");
