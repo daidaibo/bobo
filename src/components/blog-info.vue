@@ -68,22 +68,46 @@
 export default {
   name: 'blog-info',
   rootData() {
-    return {}
+    return {
+      blogInfo: {
+        title: '',
+        description: '',
+        tags: '',
+        content: '',
+        authorInfo: {
+          headImg: '',
+        },
+      }
+    }
   },
   rootMethods: {
+    fetchBlogInfo() {
+      const root = this.$root
+      const r = root.router
+      
+      if (!r.blogId) {
+        console.warn('fetchBlogInfo err no blogId')
+        return
+      }
 
+      clearTimeout(root.timerFetchBlogInfo)
+      root.timerFetchBlogInfo = setTimeout(() => {
+        root.get('blog.php', {
+          a: 'blog-info',
+          blogId: r.blogId
+        }, (blogInfo) => {
+          blogInfo.authorInfo = root.user.map[blogInfo.author]
+          blogInfo.tags_ = blogInfo.tags.split(/\s+/g)
+          root.blogInfo = blogInfo
+        })
+      }, 5)
+    },
   },
   computed: {
     blogInfo() {
       return this.$root.blogInfo
     }
   },
-  mounted() {
-    const root = this.$root
-    const r = root.router
-    
-    
-  }
 }
 </script>
 

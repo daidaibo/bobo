@@ -16,7 +16,7 @@
             <tr>
               <td>邮箱：</td>
               <td>
-                <input type="email" class="form-control" autocomplete="off" required tabindex="-1" 
+                <input type="email" class="form-control" autocomplete="off" required 
                   v-model="$root.user.info.email"
                 >
               </td>
@@ -24,7 +24,7 @@
             <tr>
               <td>密码：</td>
               <td>
-                <input type="password" class="form-control" autocomplete="off" required tabindex="-1" minlength="6" maxlength="30"
+                <input type="password" class="form-control" autocomplete="off" required minlength="6" maxlength="30"
                   v-model="$root.user.info.password"
                 >
               </td>
@@ -89,9 +89,11 @@ export default {
     logout() {
       const root = this.$root
       const r = root.router
-      
-      root.get('', {a: 'logout'}, () => {
-        root.getUserInfo()
+
+      root.get('user.php', {
+        a: 'logout'
+      }, () => {
+        root.fetchUserInfo()
         root.updateCom('blog')
       })
     },
@@ -109,14 +111,14 @@ export default {
           a: isLogin ? 'login' : 'reg',
           email: user.info.email,
           password: isLogin ? sha256(password + uid) : password,
-          uid: isLogin ? undefined : uid,
+          pub: isLogin ? undefined : uid,
         }
 
         !isLogin && (requestData.uid = uid)
 
-        root.get('', requestData, (data) => {
+        root.get('user.php', requestData, (data) => {
           root.user.isShowPanel = 0
-          root.getUserInfo()
+          root.setUserInfo(data)
         })
       })
     }

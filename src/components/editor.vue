@@ -6,12 +6,12 @@
           @submit.prevent="$root.operateBlog"
         >
           <div>
-            <input type="text" placeholder="标题（最多100字）" class="form-control" minlength="10" maxlength="100" required 
+            <input type="text" placeholder="标题（最多100字）" class="form-control" minlength="5" maxlength="100" required 
               v-model="blogInfo.title"
             >
           </div>
           <div>
-            <input type="text" placeholder="简述（最多200字）" class="form-control" minlength="10" maxlength="200" required 
+            <input type="text" placeholder="简述（最多200字）" class="form-control" minlength="5" maxlength="200" required 
               v-model="blogInfo.description"
             >
           </div>
@@ -39,38 +39,17 @@ export default {
   name: 'editor',
   rootData() {
     return {
-      blogInfo: {
-        title: '',
-        description: '',
-        tags: '',
-        content: '',
-        authorInfo: {
-          headImg: '',
-        },
-      }
     }
   },
   rootMethods: {
-    getBlogInfo() {
+    clearEditor() {
       const root = this.$root
-      const r = root.router
-      
-      if (!r.blogId) {
-        console.warn('getBlogInfo err no blogId')
-        return
-      }
+      const blogInfo = root.blogInfo
 
-      clearTimeout(root.timerGetBlogInfo)
-      root.timerGetBlogInfo = setTimeout(() => {
-        root.get('', {
-          a: 'blog-get-info',
-          blogId: r.blogId
-        }, (blogInfo) => {
-          blogInfo.authorInfo = root.user.map[blogInfo.author]
-          blogInfo.tags_ = blogInfo.tags.split(/\s+/g)
-          root.blogInfo = blogInfo
-        })
-      }, 5)
+      blogInfo.title = ''
+      blogInfo.description = ''
+      blogInfo.tags = ''
+      blogInfo.content = ''
     },
     operateBlog() {
       const root = this.$root
@@ -99,11 +78,10 @@ export default {
             root.updateCom('blog-info', {
               blogId: data.id || r.blogId
             })
-            root.getBlogInfo()
+            root.fetchBlogInfo()
           }
         })
       })
-      console.log('operateBlog')
     },
   },
   computed: {
@@ -111,12 +89,6 @@ export default {
       return this.$root.blogInfo
     }
   },
-  mounted() {
-    const root = this.$root
-    const r = root.router
-    
-    r.blogId && root.getBlogInfo()
-  }
 }
 </script>
 

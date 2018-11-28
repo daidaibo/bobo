@@ -24,7 +24,6 @@ const coms = [
   'components/blog-info',
   'components/team',
   'components/editor',
-  'components/me',
 
   'components/login-reg',
 ].map((path) => {

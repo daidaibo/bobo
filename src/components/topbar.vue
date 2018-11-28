@@ -62,15 +62,6 @@ export default {
       root.updateRouter({blogId: undefined}, 'push')
       root.clearEditor()
     },
-    clearEditor() {
-      const root = this.$root
-      const blogInfo = root.blogInfo
-
-      blogInfo.title = ''
-      blogInfo.description = ''
-      blogInfo.tags = ''
-      blogInfo.content = ''
-    },
   }
 }
 </script>

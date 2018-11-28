@@ -4,8 +4,8 @@ export default {
     const isLocal = location.origin.indexOf(808) > -1
     return {
       lenAni: 30,
-      // requestUrl: 'http://10.4.10.41/bobo/interface.php',
-      requestUrl: 'http://192.168.1.107/bobo/interface.php',
+      // requestUrl: 'http://192.168.1.107/bobo/',
+      requestUrl: 'http://10.4.10.41/',
       is: {
         local: isLocal,
       },
@@ -18,6 +18,7 @@ export default {
         isShowPanel: false,
         list: [],
         map: {},
+        isAdmin: false,
         info: {
           id: '',
           email: '',
@@ -52,14 +53,20 @@ export default {
       const root = this.$root
       const r = root.router
       
-      root.get('', {a: 'getUid'}, (data) => {
+      root.get('api.php', {
+        a: 'get-uid'
+      }, (data) => {
         cb && cb(sha256(data.uid))
       })
+    },
+    createUrl(url) {
+      return url ? 'fans/' + url : 'bobo/interface.php'
     },
     get(url, data, succ, err) {
       const root = this.$root
       const xhr = new XMLHttpRequest()
 
+      url = root.createUrl(url)
       xhr.onreadystatechange = root.onreadystatechange.bind(root, xhr, succ, err)
       xhr.open('GET', root.requestUrl + url + '?' + root.json2url(data) , true)
       xhr.send()
@@ -73,6 +80,7 @@ export default {
         formData.append(key, data[key])
       }
 
+      url = root.createUrl(url)
       xhr.onreadystatechange = root.onreadystatechange.bind(root, xhr, succ, err)
       xhr.open('POST', root.requestUrl + url, true)
       xhr.send(formData)
@@ -107,6 +115,12 @@ export default {
           break
         case 2:
           alert(data.msg)
+          break
+      }
+
+      switch (data.msg) {
+        case '账号异常':
+          root.setUserInfo({})
           break
       }
 
@@ -162,10 +176,10 @@ export default {
         r.coms.pop()
       }
     },
-    getAllUser(cb) {
+    fetchAllUser(cb) {
       const root = this.$root
       
-      root.get('', {a: 'getAllUser'}, (data) => {
+      root.get('user.php', {a: 'user-list'}, (data) => {
         const map = {}
         data.forEach((item) => {
           map[item.id] = item
@@ -175,51 +189,33 @@ export default {
         cb && cb.call(root)
       })
     },
-    getUserInfo(cb) {
+    fetchUserInfo(cb) {
       const root = this.$root
 
-      root.get('', {a: 'getUserInfo'}, (data) => {
-        ;[
-          'id', 'name', 'email', 'sex', 'birthday', 'password', 'description', 'level', 'errCount', 'errTime', 'url', 'addr', 'buss', 'bussUrl', 'time', 'headImg',
-        ].forEach((key) => {
-          root.user.info[key] = data[key] || ''
-        })
-        root.user.info.birthday_ = new Date(data.birthday * 1000).format('y-m-d')
-        cb && cb.call(root)
+      root.get('user.php', {a: 'user-info'}, (data) => {
+        root.setUserInfo(data, cb)
       })
     },
-    blogGetList() {
+    setUserInfo(data, cb) {
       const root = this.$root
-      const r = root.router
       
-      root.get('', {
-        a: 'blog-get-list',
-        belong: 'aw',
-      }, (data) => {
-        const map = {}
-        const mapBranch = {}
-
-        data.forEach((item) => {
-          item.agree_ = item.agree ? item.agree.split(',') : []
-          item.disagree_ = item.disagree ? item.disagree.split(',') : []
-          item.tags_ = item.tags ? item.tags.split(/\s+/) : []
-          map[item.id] = item
-          mapBranch[item.pid] = mapBranch[item.pid] || []
-          mapBranch[item.pid].push(item)
-          item.authorInfo = root.user.map[item.author] || {}
-        })
-
-        root.blog.list = data
-        root.blog.map = map
-        root.blog.mapBranch = mapBranch
+      data = data || {}
+      ;[
+        'id', 'name', 'email', 'sex', 'birthday', 'password', 'description', 'level', 'errCount', 'errTime', 'url', 'addr', 'buss', 'bussUrl', 'time', 'headImg',
+      ].forEach((key) => {
+        root.user.info[key] = data[key] || ''
       })
+      
+      root.user.info.birthday_ = new Date(data.birthday * 1000).format('y-m-d')
+      root.user.isAdmin = data.level == 9
+      cb && cb.call(root)
     },
     init() {
       const root = this.$root
       const r = root.router
       
-      root.getAllUser(() => {
-        root.getUserInfo(() => {
+      root.fetchAllUser(() => {
+        root.fetchUserInfo(() => {
           root.routerInit()
           window.onpopstate = root.routerInit.bind(root)
         })

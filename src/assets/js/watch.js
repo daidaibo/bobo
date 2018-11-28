@@ -16,7 +16,7 @@ export default {
   },
   'router.blogId'(newVal) {
     const root = this.$root
-    newVal ? root.getBlogInfo() : root.clearEditor()
+    newVal ? root.fetchBlogInfo() : root.clearEditor()
   },
   'router.coms': {
     deep: true,
@@ -32,12 +32,10 @@ export default {
 
       switch (com) {
         case 'blog':
-          root.blogGetList()
+          root.fetchBlogList()
           break
         case 'editor':
-          if (!r.blogId) {
-            
-          }
+          
           break
         case 'team':
 
