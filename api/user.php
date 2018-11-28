@@ -16,6 +16,10 @@ switch ($_REQUEST['a']) {
     if (!$row['id']) err(2, '邮箱未注册');
     $result = sha256($row['password'].$uid);
     if ($password !== $result) err(2, '用户名或密码错误');
+    if ($row['level'] == 0) {
+      session_destroy();
+      err(2, '账号异常');
+    }
 
     $_SESSION['user'] = $row;
     res(getUserInfo($row['id']));

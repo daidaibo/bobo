@@ -86,7 +86,7 @@ function getUserInfo($id) {
   $row['password'] = '';
   $row['headImg'] = getHeadImg($id);
   $_SESSION['user'] = $row;
-  if ($_SESSION['user']['level'] == 0) err(2, '不和你玩...');
+  if ($_SESSION['user']['level'] == 0) err(2, '账号异常');
   return $row;
 }
 
@@ -99,3 +99,5 @@ if ($_SESSION['user']) {
 
 $user = $_SESSION['user'];
 $isAdmin = $_SESSION['user']['level'] == 9;
+
+// query("UPDATE user SET addr='' ");
