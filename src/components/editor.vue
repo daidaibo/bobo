@@ -74,7 +74,6 @@ export default {
               })
             }
           } else {
-            root.alert('操作成功')
             root.updateCom('blog-info', {
               blogId: data.id || r.blogId
             })

@@ -45,7 +45,7 @@
             </div>
           </div>
         </div>
-        <div style="margin: 1.5em 0;">
+        <!-- <div style="margin: 1.5em 0;">
           <div class="btn-box">
             <div class="btn btn-xs btn-default"
               v-for="(tag, idx) in blogInfo.tags_"
@@ -55,7 +55,7 @@
               <span>{{tag}}</span>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="blog-content"
           v-html="blogInfo.content"
         ></div>
