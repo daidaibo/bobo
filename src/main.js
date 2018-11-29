@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import '@/assets/css/reset.scss'
 import '@/assets/css/main.scss'
+import '@/assets/js/com'
 import '@/assets/js/dataAux'
 import '@/assets/js/filter'
 
@@ -55,7 +56,7 @@ window.root = window.$root = window.vm = new Vue({
     const o = {
       translateX: `translateX(${rand(-w, w)}px)`,
       translateY: `translateY(${rand(-w, w)}px)`,
-      translateZ: `translateZ(${rand(-dw, -dw / 2)}px)`,
+      translateZ: `translateZ(${rand(-dw / 2, 0)}px)`,
       rotateX: `rotateX(${rand(-deg, deg)}deg)`,
       rotateY: `rotateY(${rand(-deg, deg)}deg)`,
       // rotate: `rotateX(${rand(-deg, deg)}deg)`,

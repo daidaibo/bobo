@@ -4,7 +4,7 @@
       <div class="wrap">
         <div class="list-blog">
           <section class="lmr"
-            v-for="(item, idx) in $root.blog.list"
+            v-for="(item, idx) in $root.blog.mapBranch[0] || []"
             :key="idx"
           >
             <div class="fl no-select">
@@ -67,7 +67,9 @@ export default {
       blog: {
         list: [],
         map: [],
-        mapBranch: [],
+        mapBranch: {
+          '0': [],
+        },
       }
     }
   },

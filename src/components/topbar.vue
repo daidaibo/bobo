@@ -24,7 +24,7 @@
               <span>提问</span>
             </div>
           </li>
-          <li @click="$root.updateCom('me', {subCom: 'user-info'})">我的</li>
+          <li @click="$root.updateCom('my-info', {subCom: 'user-info'})">我的</li>
           <li @click="$root.logout()">退出</li>
         </ul>
         <ul v-else>
@@ -46,7 +46,27 @@ export default {
           {name: '问答', com: 'blog'},
           {name: '团队', com: 'team'},
         ]
-      }
+      },
+      my: {
+        nav: {
+          list: [
+            {name: '个人信息', com: 'my-info'},
+            {name: '修改密码', com: 'my-password'},
+            {name: '浏览记录', com: 'my-visited'},
+            {name: '我的文章', com: 'my-blog'},
+            {name: '留言管理', com: 'my-comment'},
+            {name: '设置', com: 'my-setting'},
+          ]
+        }
+      },
+      admin: {
+        nav: {
+          list: [
+            {name: '用户管理', com: 'manage-user'},
+            {name: '文章管理', com: 'manage-blog'},
+          ]
+        }
+      },
     }
   },
   rootMethods: {
@@ -59,6 +79,7 @@ export default {
       }
 
       r.coms.unshift('editor')
+      r.countAni++
       root.updateRouter({blogId: undefined}, 'push')
       root.clearEditor()
     },

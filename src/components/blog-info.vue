@@ -2,24 +2,40 @@
   <div class="blog-info">
     <div>
       <div class="wrap" style="padding-top: 1em;">
-        <div class="blog-title" style="margin-bottom: 1.5em;">
-          <div class="lmr">
-            <div class="fl">
-              <div class="avatar" style="border-radius: 50%;" 
-                :style="{backgroundImage: 'url(' + blogInfo.authorInfo.headImg + ')'}"
-              ></div>
-            </div>
-            <div class="ho">
-              <h3 class="ellipsis">{{blogInfo.title}}</h3>
-            </div>
-          </div>
+        <div class="blog-title">
+          <h3 class="ellipsis">{{blogInfo.title}}</h3>
         </div>
         <div>
           <blockquote>
             <span class="text-bigger">{{blogInfo.description}}</span>
           </blockquote>
         </div>
-        <div style="margin: 1.5em 0;">
+        <div class="about-author">
+          <div class="lmr">
+            <div class="fl">
+              <div class="avatar" :style="{backgroundImage: 'url(' + blogInfo.authorInfo.headImg + ')'}"></div>
+            </div>
+            <div class="ho">
+              <div class="top" style="line-height: 1.8em; height: 38px;">
+                <div class="fr">
+                  <time class="text-xs text-gray">2018-11-29 17:11:28</time>
+                </div>
+                <div class="ellipsis">作者: {{blogInfo.authorInfo.name}}</div>
+              </div>
+              <div class="bottom">
+                <div class="btn-box">
+                  <div class="btn btn-default btn-xs"
+                    v-for="(item, idx) in blogInfo.tags_"
+                  >
+                    <i class="glyphicon glyphicon-tag"></i>
+                    <span>{{item}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="af">
           <div class="btn-box">
             <div class="btn btn-default btn-sm">
               <i class="glyphicon glyphicon-star-empty"></i>
@@ -27,7 +43,7 @@
             </div>
             <div class="btn btn-default btn-sm">
               <i class="glyphicon glyphicon-comment"></i>
-              <span>100条评论</span>
+              <span>{{blogInfo | countComment}}条评论</span>
             </div>
             <div class="btn btn-default btn-sm">
               <i class="glyphicon glyphicon-share-alt"></i>
@@ -39,6 +55,7 @@
             </div>
             <div class="btn btn-default btn-sm"
               @click="$root.updateCom('editor', {blogId: blogInfo.id})"
+              v-if="blogInfo.author === $root.user.info.id"
             >
               <i class="glyphicon glyphicon-pencil"></i>
               <span>编辑</span>
@@ -113,8 +130,9 @@ export default {
 
 <style lang="scss">
 .blog-info {
-  .blog-title {
-    padding-top: .2px;
+  font-size: 16px;
+  .wrap > div {
+    margin: 24px 0;
   }
   .blog-content {
     img {max-width: 100%;}

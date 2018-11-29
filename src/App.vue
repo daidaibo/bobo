@@ -7,7 +7,7 @@
           <div
             v-for="(item, idx) in $root.router.coms"
             v-if="idx === 0"
-            :key="idx"
+            :key="$root.router.countAni"
             :is="item"
           ></div>
         </transition-group>
@@ -24,6 +24,13 @@ const coms = [
   'components/blog-info',
   'components/team',
   'components/editor',
+  'components/my/my-info',
+  'components/my/my-password',
+  'components/my/my-visited',
+  'components/my/my-blog',
+  'components/my/my-comment',
+  'components/my/manage-user',
+  'components/my/manage-blog',
 
   'components/login-reg',
 ].map((path) => {
@@ -79,6 +86,9 @@ export default {
           width: 100%; height: 100%; position: absolute; left: 0; top: 0; background: #f3f6f9; overflow: auto; overflow-x: hidden;
           & > div {
             width: 100vw; min-height: calc(100% + 1px);
+            & > .wrap {
+              height: 100%;
+            }
           }
         }
       }

@@ -25,7 +25,7 @@ export default {
       const r = root.router
       const com = newVal[0]
       
-      if (!root.isLogined && com === 'me') {
+      if (!root.isLogined && com === 'my') {
         root.updateCom('blog')
         return
       }

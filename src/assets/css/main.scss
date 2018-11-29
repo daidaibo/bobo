@@ -1,3 +1,5 @@
+.af:after {content: ""; display: block; clear: both;}
+
 .btn-box {
   margin-bottom: -8px;
   .btn {
@@ -5,7 +7,27 @@
   }
 }
 
-.avatar {width: 60px; height: 60px; background: #eee no-repeat center / cover; border-radius: 50%; box-shadow: 0 0 5px rgba(0,0,0,.2);}
+.my-wrap {
+  padding-top: 20px;
+  .box-avatar {
+    margin-bottom: 20px;
+    .avatar {
+      width: auto; height: 0; padding-top: 100%;
+    }
+  }
+  .alters {
+    ul {
+      line-height: 2em; margin-bottom: 20px;
+      li {
+        &.on {
+          color: #09f;
+        }
+      }
+    }
+  }
+}
+
+.avatar {width: 60px; height: 60px; background: #eee no-repeat center / cover; border-radius: 4px; box-shadow: 0 0 5px rgba(0,0,0,.2); cursor: pointer;}
 
 .btn-box {
   .btn {margin-right: 8px;}
@@ -34,8 +56,8 @@
 
 .lmr {
   &:after {content: ""; display: block; clear: both;}
-  & > .fl {margin-right: 15px; max-width: 40%;}
-  & > .fr {margin-left: 15px; max-width: 40%;}
+  & > .fl {margin-right: 20px; max-width: 40%;}
+  & > .fr {margin-left: 20px; max-width: 40%;}
   & > .m {overflow: hidden;}
 }
 
