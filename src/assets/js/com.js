@@ -26,13 +26,25 @@ Vue.component('my-nav', {
   `
 })
 
-Vue.component('my-wrap', {
+Vue.component('wrapper', {
   template: `
-    <div class="my-wrap">
+    <div class="wrapper-scroll">
+      <div class="wrapper-body">
+        <div class="wrap">
+          <slot></slot>
+        </div>
+      </div>
+    </div>
+  `
+})
+
+Vue.component('my-wrapper', {
+  template: `
+    <div class="my-wrapper">
       <div>
         <div class="wrap">
           <div class="lmr">
-            <div class="fl">
+            <div class="fl" style="margin-right: 30px;">
               <my-nav></my-nav>
             </div>
             <div class="ho">
@@ -41,6 +53,14 @@ Vue.component('my-wrap', {
           </div>
         </div>
       </div>
+    </div>
+  `
+})
+
+Vue.component('no-data-head-text', {
+  template: `
+    <div class="c">
+      <h3 class="text-pale">暂无数据</h3>
     </div>
   `
 })

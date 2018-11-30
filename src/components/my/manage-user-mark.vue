@@ -1,12 +1,12 @@
 <template>
   <my-wrapper>
-    <div class="manage-blog">manage-blog</div>
+    <div class="manage-user-mark">manage-user-mark</div>
   </my-wrapper>
 </template>
 
 <script>
 export default {
-  name: 'manage-blog',
+  name: 'manage-user-mark',
   rootData() {
     return {
       
@@ -19,7 +19,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.manage-blog {
+.manage-user-mark {
 
 }
 </style>

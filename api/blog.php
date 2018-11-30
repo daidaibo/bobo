@@ -5,8 +5,26 @@ switch ($_REQUEST['a']) {
   case 'blog-info':
     if (!$_REQUEST['blogId']) err(1, 'blog-info no blogId');
     $data = queryRow("SELECT * FROM blog WHERE id={$_REQUEST['blogId']} LIMIT 1");
-    if (!$data) err(2, '不存在');
+    if (!$data) err(2, '文章不存在');
     query("UPDATE blog SET blog.read=blog.read+1 WHERE id={$_REQUEST['blogId']} LIMIT 1");
+    if ($_SESSION['user']['id']) {
+      $path = './visited';
+      if (!is_dir($path)) mkdir($path);
+      $path.='/1.visited';
+      if (!file_exists($path)) file_put_contents($path, '');
+      $arr = json_decode(file_get_contents($path), true);
+      $arr = $arr ? $arr : [];
+      if ($arr[0]['id'] === $data['id']) {
+        $arr[0]['time'] = time();
+      } else {
+        array_unshift($arr, [
+          'id' => $data['id'],
+          'title' => $data['title'],
+          'time' => time(),
+        ]);
+      }
+      file_put_contents($path, json_encode($arr, JSON_UNESCAPED_UNICODE));
+    }
     res($data);
     break;
   case 'blog-list':

@@ -20,12 +20,12 @@ export default {
   },
   'router.coms': {
     deep: true,
-    handler(newVal) {
+    handler(newVal, oldVal) {
       const root = this.$root
       const r = root.router
       const com = newVal[0]
       
-      if (!root.isLogined && com === 'my') {
+      if (!root.isLogined && /^my-/.test(com)) {
         root.updateCom('blog')
         return
       }
@@ -40,7 +40,24 @@ export default {
         case 'team':
 
           break
+        case 'my-visited':
+          root.fetchVisitedList()
+          break
+        case 'my-blog':
+          root.fetchMyBlogList()
+          break
+      }
+
+      if (!['blog-info', 'editor'].includes(com) && root.router.blogId) {
+        root.updateRouter({blogId: undefined})
       }
     }
   },
+  setting: {
+    deep: true,
+    handler(newVal) {
+      vm.createAni()
+      localStorage.setting = JSON.stringify(newVal)
+    }
+  }
 }

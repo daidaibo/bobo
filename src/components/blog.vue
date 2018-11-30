@@ -1,62 +1,61 @@
 <template>
-  <div class="blog">
-    <div>
-      <div class="wrap">
-        <div class="list-blog">
-          <section class="lmr"
-            v-for="(item, idx) in $root.blog.mapBranch[0] || []"
-            :key="idx"
-          >
-            <div class="fl no-select">
-              <div class="box-user text-xs c" :title="item.authorInfo.name">
-                <div class="avatar" :style="{backgroundImage: 'url(' + (item.authorInfo.headImg) + ')'}"></div>
-                <div class="nickname ellipsis">{{item.authorInfo.name}}</div>
-                <div
-                  v-if="item.author === $root.user.info.id || $root.user.isAdmin"
-                  @click="$root.blogRemove(item, idx, $root.blog.list)"
-                ><a href="javascript:">删除</a></div>
-              </div>
+  <wrapper>
+    <div class="blog">
+      <div class="list-blog">
+        <section class="lmr"
+          v-for="(item, idx) in $root.blog.mapBranch[0] || []"
+          :key="idx"
+          :data-id="item.id"
+        >
+          <div class="fl no-select">
+            <div class="box-user text-xs c" :title="item.authorInfo.name">
+              <div class="avatar" :style="{backgroundImage: 'url(' + (item.authorInfo.headImg) + ')'}"></div>
+              <div class="nickname ellipsis">{{item.authorInfo.name}}</div>
+              <div
+                v-if="item.author === $root.user.info.id || $root.user.isAdmin"
+                @click="$root.blogRemove(item, idx, $root.blog.list)"
+              ><a href="javascript:">删除</a></div>
             </div>
-            <div class="fr btn-box no-select">
-              <div class="btn btn-default btn-sm btn-block">
-                <i class="glyphicon glyphicon-eye-open"></i>
-                <span>{{item.read}}</span>
-              </div>
-              <div class="btn btn-default btn-sm btn-block">
-                <i class="glyphicon glyphicon-ok"></i>
-                <span>{{item.agree_.length || 0}}</span>
-              </div>
-              <div class="btn btn-default btn-sm btn-block">
-                <i class="glyphicon glyphicon-comment"></i>
-                <span>{{($root.blog.mapBranch[item.id] || []).length || 0}}</span>
-              </div>
+          </div>
+          <div class="fr btn-box no-select">
+            <div class="btn btn-default btn-sm btn-block">
+              <i class="glyphicon glyphicon-eye-open"></i>
+              <span>{{item.read}}</span>
             </div>
-            <div class="ho">
-              <div class="title ellipsis">
-                <strong class="text-bigger p"
-                  :title="item.title"
-                  @click="$root.updateCom('blog-info', {blogId: item.id}, 'push')"
-                >{{item.title}}</strong>
-              </div>
-              <div class="desc line-2 text-gray p"
-                :title="item.description"
+            <div class="btn btn-default btn-sm btn-block">
+              <i class="glyphicon glyphicon-ok"></i>
+              <span>{{item.agree_.length || 0}}</span>
+            </div>
+            <div class="btn btn-default btn-sm btn-block">
+              <i class="glyphicon glyphicon-comment"></i>
+              <span>{{item | countComment($root.blog)}}</span>
+            </div>
+          </div>
+          <div class="ho">
+            <div class="title ellipsis">
+              <strong class="text-bigger p"
+                :title="item.title"
                 @click="$root.updateCom('blog-info', {blogId: item.id}, 'push')"
-              >{{item.description}}</div>
-              <div class="box-tag">
-                <div class="btn btn-xs btn-default"
-                  v-for="(tag, idx) in item.tags_"
-                  :key="idx"
-                >
-                  <i class="glyphicon glyphicon-tag"></i>
-                  <span>{{tag}}</span>
-                </div>
+              >{{item.title}}</strong>
+            </div>
+            <div class="desc line-2 text-gray p"
+              :title="item.description"
+              @click="$root.updateCom('blog-info', {blogId: item.id}, 'push')"
+            >{{item.description}}</div>
+            <div class="box-tag">
+              <div class="btn btn-xs btn-default"
+                v-for="(tag, idx) in item.tags_"
+                :key="idx"
+              >
+                <i class="glyphicon glyphicon-tag"></i>
+                <span>{{tag}}</span>
               </div>
             </div>
-          </section>
-        </div>
+          </div>
+        </section>
       </div>
     </div>
-  </div>
+  </wrapper>
 </template>
 
 <script>

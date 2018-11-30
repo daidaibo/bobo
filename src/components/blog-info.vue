@@ -43,7 +43,7 @@
             </div>
             <div class="btn btn-default btn-sm">
               <i class="glyphicon glyphicon-comment"></i>
-              <span>{{blogInfo | countComment}}条评论</span>
+              <span>{{blogInfo | countComment($root.blog)}}条评论</span>
             </div>
             <div class="btn btn-default btn-sm">
               <i class="glyphicon glyphicon-share-alt"></i>
@@ -55,7 +55,7 @@
             </div>
             <div class="btn btn-default btn-sm"
               @click="$root.updateCom('editor', {blogId: blogInfo.id})"
-              v-if="blogInfo.author === $root.user.info.id"
+              v-if="blogInfo.author === $root.user.info.id || $root.user.isAdmin"
             >
               <i class="glyphicon glyphicon-pencil"></i>
               <span>编辑</span>
@@ -107,6 +107,10 @@ export default {
         return
       }
 
+      ;['title', 'description', 'tags', 'content'].forEach((k) => {
+        root.blogInfo[k] = ''
+      })
+
       clearTimeout(root.timerFetchBlogInfo)
       root.timerFetchBlogInfo = setTimeout(() => {
         root.get('blog.php', {
@@ -116,6 +120,8 @@ export default {
           blogInfo.authorInfo = root.user.map[blogInfo.author]
           blogInfo.tags_ = blogInfo.tags.split(/\s+/g)
           root.blogInfo = blogInfo
+        }, () => {
+          history.length > 1 ? history.back() : root.updateCom('blog')
         })
       }, 5)
     },

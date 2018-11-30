@@ -13,9 +13,9 @@ const arr = [
 arr.forEach((name) => {
   fs.writeFileSync(`./${name}.vue`,
 `<template>
-  <my-wrap>
+  <my-wrapper>
     <div class="${name}">${name}</div>
-  </my-wrap>
+  </my-wrapper>
 </template>
 
 <script>

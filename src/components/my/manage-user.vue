@@ -1,7 +1,7 @@
 <template>
-  <my-wrap>
+  <my-wrapper>
     <div class="manage-user">manage-user</div>
-  </my-wrap>
+  </my-wrapper>
 </template>
 
 <script>

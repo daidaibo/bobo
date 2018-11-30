@@ -54,7 +54,7 @@ export default {
             {name: '修改密码', com: 'my-password'},
             {name: '浏览记录', com: 'my-visited'},
             {name: '我的文章', com: 'my-blog'},
-            {name: '留言管理', com: 'my-comment'},
+            // {name: '留言管理', com: 'my-comment'},
             {name: '设置', com: 'my-setting'},
           ]
         }
@@ -62,8 +62,8 @@ export default {
       admin: {
         nav: {
           list: [
-            {name: '用户管理', com: 'manage-user'},
-            {name: '文章管理', com: 'manage-blog'},
+            // {name: '后台管理', com: 'manage-user'},
+            {name: '用户访问', com: 'manage-user-mark'},
           ]
         }
       },

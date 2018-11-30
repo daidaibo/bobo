@@ -21,7 +21,7 @@
             >
           </div>
           <div class="auto-flex">
-            <textarea class="form-control" required style="height: 100%;" placeholder="内容 Markdown（不要问：如何学好xx语言，帮我调试错误 ...）认真写"
+            <textarea class="form-control" required style="height: 100%;" placeholder="内容 Markdown（不要问：如何学好xx语言，帮我调试错误 ...）"
               v-model="blogInfo.content"
             ></textarea>
           </div>

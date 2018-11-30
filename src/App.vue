@@ -3,7 +3,7 @@
     <div class="flex-layout">
       <topbar></topbar>
       <div class="auto-flex" style="overflow: hidden;">
-        <transition-group :name="'ani-' + ($root.router.countAni % $root.lenAni)">
+        <transition-group :name="$root.setting.ani.type !== '3d' ? 'ani-def' : 'ani-' + ($root.router.countAni % $root.lenAni)">
           <div
             v-for="(item, idx) in $root.router.coms"
             v-if="idx === 0"
@@ -29,8 +29,10 @@ const coms = [
   'components/my/my-visited',
   'components/my/my-blog',
   'components/my/my-comment',
+  'components/my/my-setting',
   'components/my/manage-user',
   'components/my/manage-blog',
+  'components/my/manage-user-mark',
 
   'components/login-reg',
 ].map((path) => {
@@ -46,7 +48,7 @@ export default {
       ...(() => {
         let map = {}
         coms.forEach((item) => {
-          map = {...map, ...item.rootData.call(root)}
+          item.rootData && (map = {...map, ...item.rootData.call(root)})
         })
         return map
       })(),

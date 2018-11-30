@@ -48,6 +48,28 @@ switch ($_REQUEST['a']) {
     $mysqli->query("UPDATE user SET name='未命名-{$insertId}' WHERE id=$insertId LIMIT 1");
     res(getUserInfo($insertId));
     break;
+  case 'user-update-info':
+    checkUidByPub();
+    
+    if (
+      !$_REQUEST['name']
+    ) err(1, '缺少参数');
+    $_REQUEST['sex'] = $_REQUEST['sex'] ? $_REQUEST['sex'] : 0;
+
+    $mysqli->query("UPDATE user SET
+      name='{$_REQUEST['name']}',
+      description='{$_REQUEST['description']}',
+      url='{$_REQUEST['url']}',
+      buss='{$_REQUEST['buss']}',
+      bussUrl='{$_REQUEST['bussUrl']}',
+      sex='{$_REQUEST['sex']}'
+      WHERE
+      id={$_SESSION['user']['id']}
+      LIMIT 1
+    ") or die(err(2, '修改失败'));
+
+    err(0, '修改成功');
+    break;
   case 'user-info':
     if (!$_SESSION['user']) err(0, '未登录');
     res($_SESSION['user']);
@@ -60,17 +82,31 @@ switch ($_REQUEST['a']) {
     }
     res($data);
     break;
-  case 'user-update-password':
+  case 'user-update-pass':
     checkLogin();
     $uid = checkUid();
 
-    if (!$_REQUEST['passOld'] || !$_REQUEST['passNew']) err(1, 'user-update-password err 缺少参数');
+    if (!$_REQUEST['passOrigin'] || !$_REQUEST['passNew']) err(1, 'user-update-password err 缺少参数');
 
     $row = queryRow("SELECT * FROM user WHERE id={$_SESSION['user']['id']} LIMIT 1");
     $result = sha256($row['password'].$uid);
-    if ($_REQUEST['passOld'] !== $result) err(2, '原始密码错误');
+    if ($_REQUEST['passOrigin'] !== $result) err(2, '原始密码错误');
     $mysqli->query("UPDATE user SET password='{$_REQUEST['passNew']}' WHERE id={$_SESSION['user']['id']} LIMIT 1") or die(err(2, '密码修改失败'));
-
     err(0, '密码修改成功');
+    break;
+  case 'user-update-pass-admin':
+    if (!isAdmin()) err(2, 'out...');
+    checkUidByPub();
+    if (!$_REQUEST['password'] || !$_REQUEST['userId']) err(1, '缺少参数');
+    $mysqli->query("UPDATE user SET password='{$_REQUEST['password']}' WHERE id={$_REQUEST['userId']} LIMIT 1") or die(err(2, 'password 修改失败'));
+    err(0, '操作成功');
+    break;
+  case 'get-my-visited':
+    $path = './visited/'.$_SESSION['user']['id'].'.visited';
+    echo file_get_contents($path);
+    break;
+  case 'get-my-blog-list':
+    $data = queryData("SELECT * FROM blog WHERE author={$_SESSION['user']['id']} AND pid=0");
+    res($data);
     break;
 }

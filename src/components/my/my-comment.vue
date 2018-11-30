@@ -1,7 +1,7 @@
 <template>
-  <my-wrap>
+  <my-wrapper>
     <div class="my-comment">my-comment</div>
-  </my-wrap>
+  </my-wrapper>
 </template>
 
 <script>

@@ -2,6 +2,25 @@ export default {
   rootData() {
     const ua = navigator.userAgent
     const isLocal = location.origin.indexOf(808) > -1
+    let setting
+
+    try {
+      setting = JSON.parse(localStorage.setting)
+    } catch (e) {
+      setting = {}
+    }
+
+    setting = { ...{
+        ani: {
+          type: 'slide',
+          duration: '1000',
+          direction: 'tb',
+          translate: '50',
+        }
+      },
+      ...setting
+    }
+
     return {
       lenAni: 30,
       // requestUrl: 'http://192.168.1.107/bobo/',
@@ -9,12 +28,13 @@ export default {
       is: {
         local: isLocal,
       },
+      setting,
       router: {
         coms: [],
         countAni: 0,
       },
       user: {
-        mode: 'login',
+        mode: 'reg',
         isShowPanel: false,
         list: [],
         map: {},
@@ -56,7 +76,7 @@ export default {
       root.get('api.php', {
         a: 'get-uid'
       }, (data) => {
-        cb && cb(sha256(data.uid))
+        cb && cb(sha256(data.uid).toString())
       })
     },
     createUrl(url) {
@@ -175,6 +195,77 @@ export default {
       while (r.coms.length > 2) {
         r.coms.pop()
       }
+    },
+    createAni() {
+      const root = this.$root
+      const r = root.router
+      const setting = root.setting
+      let styleAni = document.getElementById('styleAni') || document.createElement('style')
+      let sHtml = ''
+
+      styleAni.id = 'styleAni'
+
+      switch (setting.ani.type) {
+        case 'none':
+
+          break
+        case 'fade':
+          sHtml = `
+            .ani-def-enter-active, .ani-def-leave-active {transition: opacity ${setting.ani.duration}ms;}
+            .ani-def-enter, .ani-def-leave-to {opacity: 0;}
+          `
+          break
+        case 'slide':
+          const mapDirection = {
+            lr: 'translateX(' + setting.ani.translate + 'px)',
+            tb: 'translateY(' + setting.ani.translate + 'px)',
+          }
+          sHtml = `
+            .ani-def-enter-active, .ani-def-leave-active {transition: all ${setting.ani.duration}ms;}
+            .ani-def-enter, .ani-def-leave-to {opacity: 0; transform: ${mapDirection[setting.ani.direction]};}
+          `
+          break
+        case '3d':
+          sHtml = new Array(root.lenAni).fill().map((_, idx) => {
+            let dw = window.innerWidth
+            let w = dw * (2 / 5)
+            w = w < 400 ? 400 : w
+            const deg = 90
+            const o = {
+              translateX: `translateX(${rand(-w, w)}px)`,
+              translateY: `translateY(${rand(-w, w)}px)`,
+              translateZ: `translateZ(${rand(-dw / 2, 0)}px)`,
+              rotateX: `rotateX(${rand(-deg, deg)}deg)`,
+              rotateY: `rotateY(${rand(-deg, deg)}deg)`,
+              // rotate: `rotateX(${rand(-deg, deg)}deg)`,
+              // scale: `scale(${rand(-100, 100) / 100})`,
+            }
+            const types = Object.keys(o)
+
+            let result = []
+            // result.push([o['translateZ']])
+            new Set(new Array(rand(3, 5)).fill().map((_, idx) => {
+              return types[rand(0, types.length - 1)]
+            })).forEach((item) => {
+              result.unshift(o[item])
+            })
+            result = result.join(' ')
+
+            return `
+              .ani-${idx}-enter-active, .ani-${idx}-leave-active {
+                transition: all ${setting.ani.duration}ms;
+              }
+              .ani-${idx}-enter, .ani-${idx}-leave-to {
+                opacity: 0;
+                transform: ${result};
+              }
+            `
+          }).join('')
+          break
+      }
+
+      styleAni.innerHTML = sHtml
+      document.body.appendChild(styleAni)
     },
     fetchAllUser(cb) {
       const root = this.$root
