@@ -4,7 +4,7 @@ require 'common.php';
 switch ($_REQUEST['a']) {
   case 'blog-info':
     if (!$_REQUEST['blogId']) err(1, 'blog-info no blogId');
-    $data = queryRow("SELECT * FROM blog WHERE id={$_REQUEST['blogId']} LIMIT 1");
+    $data = queryRow("SELECT * FROM blog WHERE id={$_REQUEST['blogId']} AND isDel=0 LIMIT 1");
     if (!$data) err(2, '文章不存在');
     query("UPDATE blog SET blog.read=blog.read+1 WHERE id={$_REQUEST['blogId']} LIMIT 1");
     if ($_SESSION['user']['id']) {
@@ -25,12 +25,14 @@ switch ($_REQUEST['a']) {
       }
       file_put_contents($path, json_encode($arr, JSON_UNESCAPED_UNICODE));
     }
+    $data['commentList'] = queryData("SELECT * FROM blog WHERE pid={$_REQUEST['blogId']} ");
     res($data);
     break;
   case 'blog-list':
-    $data = queryData("SELECT * FROM blog ORDER BY id DESC");
+    $data = queryData("SELECT * FROM blog WHERE isDel=0 AND pid=0 ORDER BY id DESC");
     foreach ($data as $key => $value) {
       unset($data[$key]['content']);
+      $data[$key]['countComment'] = queryRowArray("SELECT COUNT(id) FROM blog WHERE pid={$value['id']} ")[0];
     }
     res($data);
     break;
@@ -51,9 +53,11 @@ switch ($_REQUEST['a']) {
     err(0, $mysqli->affected_rows > 0 ? '删除成功' : '没有任何变化');
     break;
   case 'blog-add':
-    if (!$_REQUEST['title'] || !$_REQUEST['description'] || !$_REQUEST['tags'] || !$_REQUEST['content']) err(1, 'blog-add err 参数不全');
-    $row = queryRow("SELECT id FROM blog WHERE title='{$_REQUEST['title']}' LIMIT 1");
-    if ($row['id']) err(0, ['alreadyHave'=>true, 'id'=>$row['id']]);
+    if (!$_REQUEST['content']) err(1, 'blog-add err 参数不全');
+    if ($_REQUEST['title']) {
+      $row = queryRow("SELECT id, isDel FROM blog WHERE title='{$_REQUEST['title']}' LIMIT 1");
+      if ($row['id']) err(0, ['alreadyHave'=>true, 'id'=>$row['id']]);
+    }
 
     $mysqli->query("INSERT INTO blog (
       pid,
@@ -79,13 +83,14 @@ switch ($_REQUEST['a']) {
     res(queryRow("SELECT * FROM blog WHERE id={$insertId} LIMIT 1"));
     break;
   case 'blog-update':
-    if (!$_REQUEST['blogId'] || !$_REQUEST['title'] || !$_REQUEST['description'] || !$_REQUEST['tags'] || !$_REQUEST['content']) err(1, 'blog-add err 参数不全');
+    if (!$_REQUEST['blogId'] || !$_REQUEST['title'] || !$_REQUEST['description'] || !$_REQUEST['tags'] || !$_REQUEST['content']) err(1, 'blog-update err 参数不全');
 
     if (!$isAdmin) {
       $row = queryRow("SELECT author FROM blog WHERE id={$_REQUEST['blogId']} LIMIT 1");
       if ($row['author'] != $user['id']) err(2, '无权操作');
 
-      $row = queryRow("SELECT id FROM blog WHERE title='{$_REQUEST['title']}' AND author!={$user['id']} LIMIT 1");
+      $row = queryRow("SELECT id, isDel FROM blog WHERE title='{$_REQUEST['title']}' AND author!={$user['id']} LIMIT 1");
+      if ($row['isDel'] == 1) err(1, 'not exist');
       if ($row['id']) err(2, '标题已存在');
     }
 

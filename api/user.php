@@ -56,6 +56,9 @@ switch ($_REQUEST['a']) {
     ) err(1, '缺少参数');
     $_REQUEST['sex'] = $_REQUEST['sex'] ? $_REQUEST['sex'] : 0;
 
+    $row = queryRow("SELECT * FROM user WHERE name='{$_REQUEST['name']}' AND id!={$_SESSION['user']['id']} LIMIT 1");
+    if ($row['id']) err(2, '昵称已存在');
+
     $mysqli->query("UPDATE user SET
       name='{$_REQUEST['name']}',
       description='{$_REQUEST['description']}',
@@ -75,7 +78,7 @@ switch ($_REQUEST['a']) {
     res($_SESSION['user']);
     break;
   case 'user-list':
-    $data = queryData("SELECT * FROM user");
+    $data = queryData("SELECT * FROM user WHERE name!=''");
     foreach ($data as $key => $value) {
       $data[$key]['password'] = '';
       $data[$key]['headImg'] = getHeadImg($value['id']);
@@ -103,7 +106,9 @@ switch ($_REQUEST['a']) {
     break;
   case 'get-my-visited':
     $path = './visited/'.$_SESSION['user']['id'].'.visited';
-    echo file_get_contents($path);
+    $ret = file_get_contents($path);
+    $ret = $ret ? $ret : '[]';
+    echo $ret;
     break;
   case 'get-my-blog-list':
     $data = queryData("SELECT * FROM blog WHERE author={$_SESSION['user']['id']} AND pid=0");

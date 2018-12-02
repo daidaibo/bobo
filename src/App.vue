@@ -1,5 +1,7 @@
 <template>
-  <div id="app">
+  <div id="app"
+    @click="$root.clickApp"
+  >
     <div class="flex-layout">
       <topbar></topbar>
       <div class="auto-flex" style="overflow: hidden;">
@@ -32,6 +34,7 @@ const coms = [
   'components/my/my-setting',
   'components/my/manage-user',
   'components/my/manage-blog',
+  'components/my/my-collection',
   'components/my/manage-user-mark',
 
   'components/login-reg',

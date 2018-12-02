@@ -6,27 +6,30 @@
           @submit.prevent="$root.operateBlog"
         >
           <div>
+            <div v-if="r.blogTitle">回复：{{r.blogTitle}}</div>
             <input type="text" placeholder="标题（最多100字）" class="form-control" minlength="5" maxlength="100" required 
+              v-else
               v-model="blogInfo.title"
             >
           </div>
-          <div>
+          <div v-if="!r.blogTitle">
             <input type="text" placeholder="简述（最多200字）" class="form-control" minlength="5" maxlength="200" required 
               v-model="blogInfo.description"
             >
           </div>
-          <div>
+          <div v-if="!r.blogTitle">
             <input type="text" placeholder="标签（多个用空格隔开）" class="form-control" required 
               v-model="blogInfo.tags"
             >
           </div>
           <div class="auto-flex">
-            <textarea class="form-control" required style="height: 100%;" placeholder="内容 Markdown（不要问：如何学好xx语言，帮我调试错误 ...）"
+            <textarea class="form-control" required style="height: 100%;"
+              :placeholder="r.blogTitle ? '输入回复内容（支持 Markdown）' : '内容 Markdown（不要问：如何学好xx语言，帮我调试错误 ...）'"
               v-model="blogInfo.content"
             ></textarea>
           </div>
           <div>
-            <button type="submit" class="btn btn-success btn-block">{{$root.router.blogId ? '修改' : '发布'}}</button>
+            <button type="submit" class="btn btn-success btn-block">确定</button>
           </div>
         </form>
       </div>
@@ -56,16 +59,26 @@ export default {
       const r = root.router
       const blogInfo = root.blogInfo
 
+      if (root.is.sendingData) {
+        root.alert('数据发送中，请稍后')
+        return
+      }
+
+      Object.keys(blogInfo).forEach((key) => {
+        typeof blogInfo[key] === 'string' && (blogInfo[key] = blogInfo[key].trim())
+      })
+
       root.getUid((uid) => {
-        root.post('', {
-          a: root.router.blogId ? 'blog-update' : 'blog-add',
-          title: blogInfo.title.trim(),
-          description: blogInfo.description.trim(),
-          belong: 'aw'.trim(),
-          tags: blogInfo.tags.trim(),
-          content: blogInfo.content.trim(),
+        root.post('blog.php', {
+          a: r.blogId && !r.blogTitle ? 'blog-update' : 'blog-add',
+          pid: r.blogTitle ? r.blogId : 0,
+          title: blogInfo.title,
+          description: blogInfo.description,
+          belong: r.belong || 'aw',
+          tags: blogInfo.tags,
+          content: blogInfo.content,
           pub: uid,
-          blogId: $root.router.blogId,
+          blogId: r.blogId,
         }, (data) => {
           if (data.alreadyHave) {
             if (confirm('当前问题已存在，是否查看？')) {
@@ -75,7 +88,7 @@ export default {
             }
           } else {
             root.updateCom('blog-info', {
-              blogId: data.id || r.blogId
+              blogId: r.blogId || data.id
             })
             root.fetchBlogInfo()
           }
@@ -86,6 +99,9 @@ export default {
   computed: {
     blogInfo() {
       return this.$root.blogInfo
+    },
+    r() {
+      return this.$root.router
     }
   },
 }

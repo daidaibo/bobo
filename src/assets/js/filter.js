@@ -1,12 +1,12 @@
 import Vue from 'vue'
 
 Vue.filter('date', (time, format) => {
-  return new Date(time * 1000).format(format || 'y-m-d')
+  return new Date(time * 1000).format(format || 'y-m-d h:i')
 })
 
-Vue.filter('countComment', (node, blog) => {
+Vue.filter('countComment', (node) => {
   const root = window.vm
-  const mapBranch = blog.mapBranch
+  const mapBranch = root.blog.mapBranch
   let count = 0
 
   function loop(node) {

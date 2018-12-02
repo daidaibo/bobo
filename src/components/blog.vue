@@ -3,7 +3,7 @@
     <div class="blog">
       <div class="list-blog">
         <section class="lmr"
-          v-for="(item, idx) in $root.blog.mapBranch[0] || []"
+          v-for="(item, idx) in $root.blog.list"
           :key="idx"
           :data-id="item.id"
         >
@@ -28,7 +28,7 @@
             </div>
             <div class="btn btn-default btn-sm btn-block">
               <i class="glyphicon glyphicon-comment"></i>
-              <span>{{item | countComment($root.blog)}}</span>
+              <span>{{item.countComment}}</span>
             </div>
           </div>
           <div class="ho">
@@ -64,6 +64,7 @@ export default {
   rootData() {
     return {
       blog: {
+        st: 0,
         list: [],
         map: [],
         mapBranch: {
@@ -87,7 +88,7 @@ export default {
         arr.remove(item)
       })
     },
-    fetchBlogList() {
+    fetchBlogList(opt = {}, cb) {
       const root = this.$root
       const r = root.router
 
@@ -95,7 +96,7 @@ export default {
       root.timerFetchBlogList = setTimeout(() => {
         root.get('blog.php', {
           a: 'blog-list',
-          belong: 'aw',
+          belong: opt.belong || 'aw',
         }, (data) => {
           const map = {}
           const mapBranch = {}
@@ -113,6 +114,8 @@ export default {
           root.blog.list = data
           root.blog.map = map
           root.blog.mapBranch = mapBranch
+
+          cb && cb()
         })
       }, 1)
     },

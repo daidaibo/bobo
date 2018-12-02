@@ -1,5 +1,12 @@
 .af:after {content: ""; display: block; clear: both;}
 
+.share-qr-in-btn {
+  width: 200px; height: 200px; position: absolute; left: 50%; top: 100%; margin: 10px 0 0 -100px; border-radius: 4px; box-shadow: 0 0 10px rgba(0,0,0,.2); background: #fff;
+  &:after {
+    content: ""; width: 0; height: 0; border: 8px solid transparent; border-bottom-color: #fff; position: absolute; left: 50%; top: -16px; margin-left: -8px;
+  }
+}
+
 .btn-box {
   margin-bottom: -8px;
   .btn {

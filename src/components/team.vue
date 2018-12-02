@@ -1,7 +1,9 @@
 <template>
   <div class="team">
     <div>
-      <div class="list-member">
+      <div class="list-member"
+        :style="{padding: $root.is.win ? '10px 20px' : '' }"
+      >
         <section class="team-card"
           v-for="(item, idx) in $root.user.list"
         >
@@ -13,8 +15,10 @@
               <div class="text-box lmr">
                 <div class="ellipsis nickname c">
                   <a :class="{def: !item.url}" target="_blank" :href="item.url || 'javascript:'">{{item.name}}</a>
-                  <span>@</span>
-                  <a :class="{def: !item.bussUrl}" target="_blank" :href="item.bussUrl || 'javascript:'">{{item.buss}}</a>
+                  <template v-if="item.buss">
+                    <span>@</span>
+                    <a :class="{def: !item.bussUrl}" target="_blank" :href="item.bussUrl || 'javascript:'">{{item.buss}}</a>
+                  </template>
                 </div>
               </div>
             </div>
@@ -45,7 +49,7 @@ export default {
     const per = parseInt((1 / (idx + 1) * 10000)) / 100
 
     return `
-      @media (min-width: ${idx * 200}px) {
+      @media (min-width: ${idx * 180}px) {
         .list-member .team-card {width: ${per}%;}
       }
     `
@@ -57,7 +61,7 @@ export default {
 <style lang="scss" scoped>
 .team {
   .list-member {
-    padding: 10px 20px;
+    padding: 6px;
     .team-card {
       display: inline-block; padding: 6px;
       .inner {
@@ -67,7 +71,7 @@ export default {
           padding-top: 100%; background: #eee no-repeat center / cover;
         }
         .info {
-          height: 44px; padding: .8em; border-top: 1px solid #eee;
+          height: 36px; padding: .8em .2em; border-top: 1px solid #eee; font-size: 12px;
           .fr {
             max-width: 50%;
           }

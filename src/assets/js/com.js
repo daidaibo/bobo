@@ -28,14 +28,28 @@ Vue.component('my-nav', {
 
 Vue.component('wrapper', {
   template: `
-    <div class="wrapper-scroll">
+    <div class="wrapper-scroll"
+      @scroll="handleScroll"
+    >
       <div class="wrapper-body">
         <div class="wrap">
           <slot></slot>
         </div>
       </div>
     </div>
-  `
+  `,
+  methods: {
+    handleScroll(e) {
+      const root = this.$root
+      const r = root.router
+      
+      switch (r.coms[0]) {
+        case 'blog':
+          root.blog.st = e.target.scrollTop
+          break
+      }
+    }
+  }
 })
 
 Vue.component('my-wrapper', {

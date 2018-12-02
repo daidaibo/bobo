@@ -12,7 +12,7 @@ export default {
 
     setting = { ...{
         ani: {
-          type: 'slide',
+          type: '3d',
           duration: '1000',
           direction: 'tb',
           translate: '50',
@@ -23,10 +23,14 @@ export default {
 
     return {
       lenAni: 30,
-      // requestUrl: 'http://192.168.1.107/bobo/',
-      requestUrl: 'http://10.4.10.41/',
+      requestUrl: isLocal ? 'http://192.168.1.107/fans/' : '/fans/',
+      // requestUrl: 'http://10.4.10.41/',
       is: {
         local: isLocal,
+        win: ua.indexOf('Windows NT') > -1,
+      },
+      qr: {
+        isShow: 0,
       },
       setting,
       router: {
@@ -60,6 +64,9 @@ export default {
     }
   },
   rootMethods: {
+    log(msg) {
+      console.log(msg)
+    },
     alert(msg) {
       alert(msg)
     },
@@ -80,7 +87,8 @@ export default {
       })
     },
     createUrl(url) {
-      return url ? 'fans/' + url : 'bobo/interface.php'
+      const root = this.$root
+      return root.requestUrl + url
     },
     get(url, data, succ, err) {
       const root = this.$root
@@ -88,7 +96,7 @@ export default {
 
       url = root.createUrl(url)
       xhr.onreadystatechange = root.onreadystatechange.bind(root, xhr, succ, err)
-      xhr.open('GET', root.requestUrl + url + '?' + root.json2url(data) , true)
+      xhr.open('GET', url + '?' + root.json2url(data) , true)
       xhr.send()
     },
     post(url, data, succ, err) {
@@ -102,7 +110,7 @@ export default {
 
       url = root.createUrl(url)
       xhr.onreadystatechange = root.onreadystatechange.bind(root, xhr, succ, err)
-      xhr.open('POST', root.requestUrl + url, true)
+      xhr.open('POST', url, true)
       xhr.send(formData)
     },
     onreadystatechange(xhr, succ, err) {
@@ -123,7 +131,7 @@ export default {
       try {
         data = JSON.parse(str)
       } catch (e) {
-        console.log('数据解析失败', str)
+        console.warn('数据解析失败', str)
         return
       }
 
@@ -286,6 +294,10 @@ export default {
       root.get('user.php', {a: 'user-info'}, (data) => {
         root.setUserInfo(data, cb)
       })
+    },
+    clickApp() {
+      const root = this.$root
+      root.qr.isShow = false
     },
     setUserInfo(data, cb) {
       const root = this.$root

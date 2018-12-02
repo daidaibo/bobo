@@ -4,7 +4,6 @@ export default {
     const r = root.router
     
     switch (r.coms[0]) {
-      case 'editor':
       case 'blog-info':
         return 'blog'
       default:

@@ -1,3 +1,5 @@
+var QRCode = require('qrcode')
+
 export default {
   router: {
     deep: true,
@@ -13,10 +15,6 @@ export default {
 
       delete root.isRouterPush
     }
-  },
-  'router.blogId'(newVal) {
-    const root = this.$root
-    newVal ? root.fetchBlogInfo() : root.clearEditor()
   },
   'router.coms': {
     deep: true,
@@ -34,8 +32,11 @@ export default {
         case 'blog':
           root.fetchBlogList()
           break
+        case 'blog-info':
+          root.fetchBlogInfo()
+          break
         case 'editor':
-          
+          r.blogId && !r.blogTitle ? root.fetchBlogInfo() : root.clearEditor()
           break
         case 'team':
 
@@ -48,10 +49,23 @@ export default {
           break
       }
 
-      if (!['blog-info', 'editor'].includes(com) && root.router.blogId) {
-        root.updateRouter({blogId: undefined})
+      if (!['blog-info', 'editor'].includes(com)) {
+        root.updateRouter({blogId: undefined, blogTitle: undefined})
       }
     }
+  },
+  'qr.isShow'(newVal) {
+    if (!newVal) return
+
+    this.$nextTick(() => {
+      QRCode.toDataURL(location.href, {
+        width: 200 * window.devicePixelRatio,
+        height: 200 * window.devicePixelRatio,
+      }, function(err, url) {
+        const img = document.getElementById('img-qr')
+        img.src = url
+      })
+    })
   },
   setting: {
     deep: true,

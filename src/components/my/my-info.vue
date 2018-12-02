@@ -37,7 +37,7 @@
           <tr>
             <td>个人说明：</td>
             <td>
-              <textarea class="form-control" maxlength="200" 
+              <textarea class="form-control" maxlength="200" style="min-height: 6em;" 
                 v-model="userInfo.description"
               ></textarea>
             </td>
@@ -45,7 +45,7 @@
           <tr>
             <td>个人网站：</td>
             <td>
-              <input type="text" class="form-control" maxlength="200" 
+              <input type="url" class="form-control" maxlength="200" 
                 v-model="userInfo.url"
               >
             </td>
@@ -61,7 +61,7 @@
           <tr>
             <td>公司网址：</td>
             <td>
-              <input type="text" class="form-control"
+              <input type="url" class="form-control"
                 v-model="userInfo.bussUrl"
               >
             </td>

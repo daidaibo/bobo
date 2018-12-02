@@ -16,7 +16,7 @@ import App from './App'
 
 Vue.config.productionTip = false
 
-window.root = window.$root = window.vm = new Vue({
+window.vm = new Vue({
   el: '#app',
   data() {
     return {
