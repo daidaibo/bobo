@@ -22,9 +22,11 @@ export default {
     }
 
     return {
+      dw: window.innerWidth,
       lenAni: 30,
       requestUrl: isLocal ? 'http://192.168.1.107/fans/' : '/fans/',
-      // requestUrl: 'http://10.4.10.41/',
+      requestUrl: isLocal ? 'http://10.4.10.41/fans/' : '/fans/',
+      // requestUrl: 'http://10.4.10.41/fans',
       is: {
         local: isLocal,
         win: ua.indexOf('Windows NT') > -1,
@@ -325,4 +327,8 @@ export default {
       })
     }
   },
+}
+
+window.onresize = () => {
+  vm.dw = window.innerWidth
 }

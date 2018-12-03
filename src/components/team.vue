@@ -6,6 +6,8 @@
       >
         <section class="team-card"
           v-for="(item, idx) in $root.user.list"
+          v-if="item.name.indexOf('未命名') !== 0"
+          :key="idx"
         >
           <div class="inner">
             <div class="head-img p"
@@ -49,7 +51,7 @@ export default {
     const per = parseInt((1 / (idx + 1) * 10000)) / 100
 
     return `
-      @media (min-width: ${idx * 180}px) {
+      @media (min-width: ${idx * 200}px) {
         .list-member .team-card {width: ${per}%;}
       }
     `

@@ -1,10 +1,12 @@
 <template>
   <div class="topbar no-select">
     <div class="wrap lmr">
-      <div class="fl">
+      <div class="fl"
+        v-if="$root.dw > 500"
+      >
         <div class="logo text-big">BoBo-Fans</div>
       </div>
-      <div class="fl">
+      <div class="fl" style="margin-right: 0;">
         <ul>
           <li
             v-for="(item, idx) in $root.nav.list"
@@ -14,9 +16,9 @@
           >{{item.name}}</li>
         </ul>
       </div>
-      <div class="fr">
+      <div class="fr" style="max-width: none; margin-left: 0;">
         <ul v-if="$root.isLogined">
-          <li>
+          <li style="margin-left: 0;">
             <div class="btn btn-sm btn-success" style="top: -1px;"
               @click="$root.gotoEditor"
             >

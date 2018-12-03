@@ -4,7 +4,7 @@ Vue.component('my-nav', {
   template: `
     <div class="my-nav">
       <div class="box-avatar">
-        <div class="avatar" :style="{backgroundImage: 'url(./static/img/avatar.jpg)'}"></div>
+        <div class="avatar" :style="{backgroundImage: 'url(' + $root.user.info.headImg + ')'}"></div>
       </div>
       <div class="alters">
         <ul>

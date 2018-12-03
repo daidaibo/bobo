@@ -8,7 +8,6 @@
             <td>
               <div>
                 <span>{{userInfo.email}}</span>
-                <span class="text-danger" style="margin-left: 10px;">(*用于登录，不可修改)</span>
               </div>
             </td>
           </tr>

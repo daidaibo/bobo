@@ -1,4 +1,4 @@
-import 'bootstrap/dist/css/bootstrap.css'
+// import 'bootstrap/dist/css/bootstrap.css'
 import '@/assets/css/reset.scss'
 import '@/assets/css/main.scss'
 import '@/assets/js/com'

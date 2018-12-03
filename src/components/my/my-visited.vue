@@ -60,4 +60,5 @@ export default {
 .my-visited {
 
 }
+
 </style>

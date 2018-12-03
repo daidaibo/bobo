@@ -129,7 +129,7 @@
                   </div>
                 </div>
                 <div class="box-replay">
-                  <p>{{item.content}}</p>
+                  <p v-html="item.content_"></p>
                 </div>
               </div>
             </section>
@@ -192,6 +192,7 @@ export default {
           blogInfo.commentList = blogInfo.commentList || []
           blogInfo.commentList.forEach((item) => {
             item.authorInfo = root.user.map[item.author]
+            item.content_ = markdown.toHTML(item.content)
           })
           root.blogInfo = blogInfo
         }, () => {

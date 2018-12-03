@@ -22,10 +22,10 @@
               <i class="glyphicon glyphicon-eye-open"></i>
               <span>{{item.read}}</span>
             </div>
-            <div class="btn btn-default btn-sm btn-block">
+            <!-- <div class="btn btn-default btn-sm btn-block">
               <i class="glyphicon glyphicon-ok"></i>
               <span>{{item.agree_.length || 0}}</span>
-            </div>
+            </div> -->
             <div class="btn btn-default btn-sm btn-block">
               <i class="glyphicon glyphicon-comment"></i>
               <span>{{item.countComment}}</span>

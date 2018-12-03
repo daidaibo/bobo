@@ -1,5 +1,14 @@
 .af:after {content: ""; display: block; clear: both;}
 
+
+@media (max-width: 500px) {
+  .list-group {
+    .fr {
+      float: none; margin-bottom: 5px; white-space: nowrap; margin-left: 0 !important;
+    }
+  }
+}
+
 .share-qr-in-btn {
   width: 200px; height: 200px; position: absolute; left: 50%; top: 100%; margin: 10px 0 0 -100px; border-radius: 4px; box-shadow: 0 0 10px rgba(0,0,0,.2); background: #fff;
   &:after {
