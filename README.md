@@ -4,4 +4,6 @@
 
 域名暂定 http://jojojs.com 
 
-欢迎加入 [bobo-fans](http://jojojs.com ) 大家庭
+当前项目处于内测阶段，欢迎提出宝贵意见
+
+诚邀加入 [bobo-fans](http://jojojs.com ) 大家庭
